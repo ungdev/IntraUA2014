@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="css/admin.events.css">
+
+<h1>Admin - Événements</h1>
+
+<h2>Liste des événements</h2>
+
+<ul id="list">
+    <li>
+        Événement 1
+        <a href="#">Supprimer</a>
+    </li>
+</ul>
+
+<h2>Créer un événement</h2>
+
+<form method="post" action="">
+    <div class="form-group">
+        <label for="title">Titre :</label>
+        <input type="text" name="title" id="title" class="form-control" placeholder="Stream de la finale de Starcraft II" required>
+    </div>
+    <div class="form-group">
+        <label for="date">Date et heure :</label>
+        <div class="input-group date">
+            <input type="text" name="date" id="date"  class="form-control date" readonly required>
+            <span class="input-group-addon">
+                Choisir la date
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="description">Description :</label>
+        <textarea name="description" id="description" class="form-control" placeholder="Préparez-vous pour la finale de League of Legends de l'UTT Arena 2014 !" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Créer l'événement</button>
+</form>
+
+
+<script src="vendor/momentjs/moment.min.js"></script>
+<script src="vendor/momentjs/moment.fr.min.js"></script>
+<script src="vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="js/admin.events.js"></script>

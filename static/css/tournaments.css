@@ -1,0 +1,29 @@
+.jQBracket div.label.label {
+    color: #000;
+    line-height: 20px;
+}
+
+.tournamentSaver {
+    margin-left: 20px;
+}
+
+.shiftTournament-1 {
+    margin-left: 140px;
+}
+
+.shiftTournament-2 {
+    margin-left: 280px;
+}
+
+.shiftTournament-2.reducedMargin {
+    margin-left: 140px;
+}
+
+div.jQBracket .bubble.fourth.fourth {
+    background-color: #678;
+    color: #CCD;
+}
+
+div.jQBracket .bubble.fourth.fourth:after {
+    border-right-color: #678;
+}

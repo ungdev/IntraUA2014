@@ -1,0 +1,18 @@
+.input-group-addon {
+    cursor: pointer;
+}
+
+#nbTokens + span {
+    position: relative;
+    top: 5px;
+}
+
+#tokensList li {
+    height: 35px;
+}
+
+#tokensList li input {
+    display: inline;
+    margin-left: 10px;
+    width: auto;
+}

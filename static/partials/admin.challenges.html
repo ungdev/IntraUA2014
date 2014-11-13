@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="css/admin.challenges.css">
+
+<h1>Admin - Challenges</h1>
+
+<h2>Liste des challenges</h2>
+
+<ul id="list">
+    <li>
+       Challenge 1
+        <a href="#">Supprimer</a>
+    </li>
+</ul>
+
+<h2>Créer un challenge</h2>
+
+<form method="post" action="">
+    <div class="form-group">
+        <label for="title">Titre :</label>
+        <input type="text" name="title" id="title" class="form-control" placeholder="Défi génial" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Description :</label>
+        <textarea name="description" id="description" class="form-control" placeholder="Dans ce défi vous devrez réussir à ..." required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="nbTokens">Nombre de tokens :</label>
+        <input type="number" name="nbTokens" id="nbTokens" class="form-control" placeholder="3" required>
+        <span class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <ul id="tokensList"></ul>
+    </div>
+    <button type="submit" id="submit" class="btn btn-primary btn-block" disabled>Créer le tournoi</button>
+</form>
+
+
+<script src="vendor/momentjs/moment.min.js"></script>
+<script src="vendor/momentjs/moment.fr.min.js"></script>
+<script src="vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="js/admin.challenges.js"></script>
