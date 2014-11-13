@@ -4,22 +4,26 @@ class Settings < Settingslogic
   load!
 end
 
+
 require 'sinatra'
 require 'sequel'
+require 'json'
+
+class Tournament < Sequel::Model
+end
 
 post '/auth' do
 
 end
 
-class Tournament < Sequel::Model
-end
+
 
 get '/tournaments' do
 
 end
 
 post '/tournaments' do
- 
+
 end
 
 get '/tournaments/:id' do 
@@ -77,5 +81,19 @@ put '/challenges/:id' do
 end
 
 delete '/challenges/:id' do 
+
+end
+
+end
+
+get '/challenges/:id' do
+
+end
+
+put '/challenges/:id' do
+
+end
+
+delete '/challenges/:id' do
 
 end
