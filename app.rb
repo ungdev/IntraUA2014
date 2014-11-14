@@ -11,6 +11,9 @@ post '/auth' do
 
 end
 
+class Tournament < Sequel::Model
+end
+
 get '/tournaments' do
 
 end
@@ -31,6 +34,9 @@ delete '/tournaments/:id' do
 
 end
 
+class Events < Sequel::Model
+end
+
 get '/events' do
 
 end
@@ -49,6 +55,9 @@ end
 
 delete '/events/:id' do 
 
+end
+
+class Challenge < Sequel::Model
 end
 
 get '/challenges' do
