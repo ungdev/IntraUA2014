@@ -1,30 +1,34 @@
 require 'rubygems'
+require 'sequel'
 
-plugin :validation_helpers
 
 class User < Sequel::Model
+   plugin :validation_helpers
    def validate
     super
   end
 end
 
 class Tournament < Sequel::Model
+  plugin :validation_helpers
   def validate
     super
   end
 end
 
 class Event < Sequel::Model
+  plugin :validation_helpers
   def validate
     super
     validates_presence [:title, :description, :date]
-    validate_type String, [:title, :description]
-    validate_type DateTime, :date
-    validate_unique (:title)
+    validates_type String, [:title, :description]
+    #validates_type DateTime, :date
+    validates_unique (:title)
   end
 end
 
 class Challenge < Sequel::Model
+plugin :validation_helpers
   def validate
     super
   end
