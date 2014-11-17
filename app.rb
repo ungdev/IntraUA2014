@@ -1,99 +1,41 @@
-class Settings < Settingslogic
-  source "#{Rails.root}/config/application.yml"
-  namespace Rails.env
-  load!
-end
-
-
 require 'sinatra'
+require 'rubygems'
+
 require 'sequel'
 require 'json'
+require 'dotenv'
+Dotenv.load
 
-class Tournament < Sequel::Model
+DB = Sequel.connect(ENV['DATABASE_URL'])
+set :show_exceptions, false
+set :raise_error, true
+['tournaments', 'events', 'challenges'].each do |path|
+  get "/#{path}" do
+     content_type :json
+     DB[path.to_sym].all.to_json
+  end
+
+  get %r{/#{path}/(?<id>\d+)} do |id|
+     content_type :json
+     begin
+       DB[path.to_sym].first!(:id=>id.to_i).to_json
+     rescue Sequel::NoMatchingRow
+       halt 404
+     end
+  end
 end
 
-post '/auth' do
+error 400 do
+  content_type :json
+end
 
+not_found do |path|
+  content_type :json
+  [:error => "#{path[0...-1].capitalize} not found"].to_json  
+end
+
+error 403 do
+  content_type :json
 end
 
 
-
-get '/tournaments' do
-
-end
-
-post '/tournaments' do
-
-end
-
-get '/tournaments/:id' do 
-
-end
-
-put '/tournaments/:id' do 
-
-end
-
-delete '/tournaments/:id' do 
-
-end
-
-class Events < Sequel::Model
-end
-
-get '/events' do
-
-end
-
-post '/events' do
- 
-end
-
-get '/events/:id' do 
-
-end
-
-put '/events/:id' do 
-
-end
-
-delete '/events/:id' do 
-
-end
-
-class Challenge < Sequel::Model
-end
-
-get '/challenges' do
-
-end
-
-post '/challenges' do
- 
-end
-
-get '/challenges/:id' do 
-
-end
-
-put '/challenges/:id' do 
-
-end
-
-delete '/challenges/:id' do 
-
-end
-
-end
-
-get '/challenges/:id' do
-
-end
-
-put '/challenges/:id' do
-
-end
-
-delete '/challenges/:id' do
-
-end
