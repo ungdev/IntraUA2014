@@ -7,6 +7,7 @@ require 'dotenv'
 Dotenv.load
 
 DB = Sequel.connect(ENV['DATABASE_URL'])
+
 set :show_exceptions, false
 set :raise_error, true
 ['tournaments', 'events', 'challenges'].each do |path|
@@ -20,22 +21,11 @@ set :raise_error, true
      begin
        DB[path.to_sym].first!(:id=>id.to_i).to_json
      rescue Sequel::NoMatchingRow
-       halt 404
+       halt 404, {:error => "#{path[0...-1].capitalize} not found" }.to_json 
      end
   end
 end
 
-error 400 do
-  content_type :json
-end
 
-not_found do |path|
-  content_type :json
-  [:error => "#{path[0...-1].capitalize} not found"].to_json  
-end
-
-error 403 do
-  content_type :json
-end
 
 
