@@ -9,7 +9,7 @@ require 'digest'
 DB = Sequel.connect(ENV['DATABASE_URL'])
 
 require_relative 'model'
-
+require 'base64'
 disable :raise_errors
 disable :show_exceptions
 
@@ -23,20 +23,20 @@ post "/auth" do
     
     halt 403, {:errors => "User not found" }.to_json  if (user.nil?)
     
-    password = loginInformation[:password]
+    password = loginInformation["password"]
     salt = user[:salt]
     salted = password + '{' + salt + '}'
     digest = Digest::SHA512.digest(salted)
     for i in (1...5000) do
       digest = Digest::SHA512.digest(digest + salted)
     end
-    encodedPassword = Base64.encode64(digest)
+    encodedPassword = Base64.strict_encode64(digest)
     
     halt 403,  {:errors => "Wrong password"}.to_json  unless user[:password] == encodedPassword
     
     token = SecureRandom.hex
     user[:token]= token
-    user.save_changes
+    user.save
     
     content_type :json
     {:token => user[:token], :admin => user[:admin]}.to_json
