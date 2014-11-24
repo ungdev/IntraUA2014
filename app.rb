@@ -13,6 +13,14 @@ require 'base64'
 disable :raise_errors
 disable :show_exceptions
 
+def helpers
+    def authenticate(username,token,adminRequired)
+        user = DB[:users].first(:username=>loginInformation["username"])
+        halt 401 unless user["token"] == token
+        halt 403 unless adminRequired == false or adminRequired == true and user["admin"] == true
+    end
+end
+
 post "/auth" do
     
     loginInformation = JSON.parse request.body.read
@@ -21,7 +29,7 @@ post "/auth" do
     
     user = DB[:users].first(:username=>loginInformation["username"])
     
-    halt 403, {:errors => "User not found" }.to_json  if (user.nil?)
+    halt 403, {:errors => "User not found"}.to_json  if (user.nil?)
     
     password = loginInformation["password"]
     salt = user[:salt]
