@@ -6,6 +6,7 @@ class User < Sequel::Model
    plugin :validation_helpers
    def validate
     super
+    validate_type Integer, :point
   end
 end
 
@@ -31,7 +32,8 @@ class Event < Sequel::Model
 end
 
 class Challenge < Sequel::Model
-plugin :validation_helpers
+  plugin :validation_helpers
+  one_to_many :challenges_tokens, :key=>:challenge
   def validate
     super
     validates_presence [:title, :description, :date]
@@ -41,7 +43,8 @@ plugin :validation_helpers
 end
 
 class ChallengeToken < Sequel::Model
-plugin :validation_helpers
+  plugin :validation_helpers
+  many_to_one :challenge, :key=>:challenge
   def validate
     super
     validates_presence [:title, :description, :date]

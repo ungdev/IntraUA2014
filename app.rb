@@ -32,6 +32,9 @@ helpers do
     end
     
     def find (model, id)
+         entity = Object.const_get(model[0...-1].capitalize)[id.to_i]
+         halt 404,  {:errors => "#{model.capitalize} not found"}.to_json if entity.nil?
+         entity
     end
 end
 
@@ -83,20 +86,26 @@ end
   end
 
   get %r{/#{path}/(?<id>\d+)} do |id|
-      @entity = DB[path.to_sym].where(:id=>id.to_i).first
-      halt 404,  {:errors => "#{path.capitalize} not found"}.to_json unless not @entity.nil? 
-      @entity.to_json
+      find(path, id).to_hash.to_json
   end
   
   put %r{/#{path}/(?<id>\d+)} do |id|
        authenticate(path == "tournaments")
-       halt 404,  {:errors => "#{path.capitalize} not found"}.to_json unless DB[path.to_sym].where(:id=>id.to_i).update (@data) > 0
+       entity = find(path, id)
+       
+       begin
+       entity.update(@data)
+       rescue
+       halt 400, {:errors => "No changes have been made"}
+       end
+        
+       
        status 204
   end
   
   delete %r{/#{path}/(?<id>\d+)} do |id|
        authenticate(path == "tournaments")
-       halt 404,  {:errors => "#{path.capitalize} not found"}.to_json unless DB[path.to_sym].where(:id=>id.to_i).delete > 0
+       find(path,id).destroy
        status 204
   end
 end
@@ -105,3 +114,4 @@ error JSON::ParserError do
     status 400
     {:errors => "Request body is not a correct JSON" }.to_json
 end
+
