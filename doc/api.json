@@ -1,0 +1,1053 @@
+{
+    "_version": "2.0",
+    "metadata": [
+        {
+            "name": "FORMAT",
+            "value": "1A"
+        },
+        {
+            "name": "HOST",
+            "value": "http://intranet.arena.utt.fr"
+        }
+    ],
+    "name": "UTT Arena Intranet API",
+    "description": "Cette API est faite pour communiquer facilement depuis l'application qui sera disponible lors de UTT Arena \net la base de données.\n\n",
+    "resourceGroups": [
+        {
+            "name": "User",
+            "description": "",
+            "resources": [
+                {
+                    "name": "Authentication",
+                    "description": "",
+                    "uriTemplate": "/auth",
+                    "model": {},
+                    "parameters": [],
+                    "actions": [
+                        {
+                            "name": "Authenticate",
+                            "description": "",
+                            "method": "POST",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "200",
+                                            "description": "",
+                                            "headers": [],
+                                            "body": "{\n    \"id\" : 50,\n    \"isAdmin\": true,\n    \"token\": \"\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "401",
+                                            "description": "",
+                                            "headers": [],
+                                            "body": "",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Tournament",
+            "description": "",
+            "resources": [
+                {
+                    "name": "Tournament collection",
+                    "description": "A collection of Tournament\n",
+                    "uriTemplate": "/tournaments",
+                    "model": {},
+                    "parameters": [],
+                    "actions": [
+                        {
+                            "name": "List all Tournament",
+                            "description": "Retrive all tournaments with all data\n",
+                            "method": "GET",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "200",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "[{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"owner\": \"UNG\", \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\",\n  \"capacity\" : \"16\",\n  \"teamSize\" : \"1\"\n}, {\n  \"id\": \"43\", \n  \"title\": \"Jogging in park\", \n  \"owner\": \"Me\", \n  \"description\": \"Bravely Default\",\n  \"capacity\" : \"8\",\n  \"teamSize\" : \"3\"\n}]\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Create a Tournament",
+                            "description": "Create a new Tournament\n",
+                            "method": "POST",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [
+                                        {
+                                            "name": "",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"title\": \"H2G2\", \n  \"owner\": \"UNG\", \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\",\n  \"capacity\" : \"16\",\n  \"teamSize\" : \"1\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ],
+                                    "responses": [
+                                        {
+                                            "name": "201",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"owner\": \"UNG\", \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\",\n  \"capacity\" : \"16\",\n  \"teamSize\" : \"1\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "400",
+                                            "description": "Returned if the tournament creation fails due to validation",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "    {\n        \"errors\": {\n            \"date\": [\n                \"is not a valid datetime\"\n            ],\n            \"title\": [\n                \"is already taken\"\n            ]\n        }\n    }\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Tournament",
+                    "description": "A single Tournament object with all its details\n\n",
+                    "uriTemplate": "/tournaments/{id}",
+                    "model": {},
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "description": "Id of the tournament",
+                            "type": "string",
+                            "required": true,
+                            "default": "",
+                            "example": "1",
+                            "values": []
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "name": "Retrieve a Tournament",
+                            "description": "Retrive a single Tournament\n",
+                            "method": "GET",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "200",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"owner\": \"UNG\", \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\",\n  \"capacity\" : \"16\",\n  \"teamSize\" : \"1\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Update a Tournament",
+                            "description": "Update a single Tournament\n",
+                            "method": "PUT",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [
+                                        {
+                                            "name": "",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"owner\": \"UNG\", \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\",\n  \"capacity\" : \"16\",\n  \"teamSize\" : \"1\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ],
+                                    "responses": [
+                                        {
+                                            "name": "204",
+                                            "description": "",
+                                            "headers": [],
+                                            "body": "",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "404",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Tournament not found\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Remove a Tournament",
+                            "description": "Remove a single Tournament\n",
+                            "method": "DELETE",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "204",
+                                            "description": "",
+                                            "headers": [],
+                                            "body": "",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "Returned if the user is not authorized to delete the Tournament",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "404",
+                                            "description": "Returned if the Tournament not found",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Tournament not found\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Event",
+            "description": "",
+            "resources": [
+                {
+                    "name": "Event collection",
+                    "description": "A collection of Event\n\n",
+                    "uriTemplate": "/events",
+                    "model": {},
+                    "parameters": [],
+                    "actions": [
+                        {
+                            "name": "List all Event",
+                            "description": "Retrive all events with all data\n",
+                            "method": "GET",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "200",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "[{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"date\": Tue, 11 Nov 2014 19:35:14 GMT, \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\"\n}, {\n  \"id\": \"42\", \n  \"title\": \"UA\", \n  \"date\": Tue, 11 Nov 2014 19:35:14 GMT, \n  \"description\": \"Amusez-vous !\"\n}]\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Create a Event",
+                            "description": "Create a new Event\n",
+                            "method": "POST",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [
+                                        {
+                                            "name": "",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"title\": \"H2G2\", \n  \"date\": Tue, 11 Nov 2014 19:35:14 GMT, \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ],
+                                    "responses": [
+                                        {
+                                            "name": "201",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"date\": Tue, 11 Nov 2014 19:35:14 GMT, \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "Returned if the user is not authoried to create an Event",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n   \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Event",
+                    "description": "A single Event object with all its details\n\n",
+                    "uriTemplate": "/events/{id}",
+                    "model": {},
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "description": "Id of the event",
+                            "type": "string",
+                            "required": true,
+                            "default": "",
+                            "example": "1",
+                            "values": []
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "name": "Retrieve a Event",
+                            "description": "Retrive a single Event\n",
+                            "method": "GET",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "200",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"date\": Tue, 11 Nov 2014 19:35:14 GMT, \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Update a Event",
+                            "description": "Update a single Event\n",
+                            "method": "PUT",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [
+                                        {
+                                            "name": "",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"date\": Tue, 11 Nov 2014 19:35:14 GMT, \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ],
+                                    "responses": [
+                                        {
+                                            "name": "204",
+                                            "description": "",
+                                            "headers": [],
+                                            "body": "",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "Returned if is not authorized to update the Event",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "404",
+                                            "description": "Returned if the Event is not found",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Event not found\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Remove a Event",
+                            "description": "Remove a single Event\n",
+                            "method": "DELETE",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "204",
+                                            "description": "",
+                                            "headers": [],
+                                            "body": "",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "Returned if the user is not authorized to delete the Event",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "404",
+                                            "description": "Returned if the Event is not found",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Event not found\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Challenge",
+            "description": "",
+            "resources": [
+                {
+                    "name": "Challenge collection",
+                    "description": "A collection of Challenge\n\n",
+                    "uriTemplate": "/challenges",
+                    "model": {},
+                    "parameters": [],
+                    "actions": [
+                        {
+                            "name": "List all Challenge",
+                            "description": "Retrive all challenges with all data\n",
+                            "method": "GET",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "200",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "[{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\",\n  \"tokens\" : [\n               {\n                 \"value\" : \"plop\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plor\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plot\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n             ]\n},{\n  \"id\": \"43\", \n  \"title\": \"H2G2\", \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\",\n  \"tokens\" : [\n               {\n                 \"value\" : \"plop\", \n                 \"challenge\": \"43\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plor\", \n                 \"challenge\": \"43\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plot\", \n                 \"challenge\": \"43\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n             ]\n}]\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Create a Challenge",
+                            "description": "Create a new Challenge\n",
+                            "method": "POST",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [
+                                        {
+                                            "name": "",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"title\": \"H2G2\", \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\",\n  \"tokens\" : [\n               {\n                 \"value\" : \"plop\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plor\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plot\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n             ]\n}\n",
+                                            "schema": ""
+                                        }
+                                    ],
+                                    "responses": [
+                                        {
+                                            "name": "201",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\",\n  \"tokens\" : [\n               {\n                 \"value\" : \"plop\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plor\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plot\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n             ]\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "Returned if the user is not authoried to create an Challenge",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n   \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Challenge",
+                    "description": "A single Challenge object with all its details\n\n",
+                    "uriTemplate": "/challenges/{id}",
+                    "model": {},
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "description": "Id of the challenge",
+                            "type": "string",
+                            "required": true,
+                            "default": "",
+                            "example": "1",
+                            "values": []
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "name": "Retrieve a Challenge",
+                            "description": "Retrive a single Challenge\n",
+                            "method": "GET",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "200",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\",\n  \"tokens\" : [\n               {\n                 \"value\" : \"plop\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plor\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plot\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n             ]\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Update a Challenge",
+                            "description": "Update a single Challenge setting its challenge tokens\n",
+                            "method": "PUT",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [
+                                        {
+                                            "name": "",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\",\n  \"tokens\" : [\n               {\n                 \"value\" : \"plop\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plor\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               },\n               {\n                 \"value\" : \"plot\", \n                 \"challenge\": \"42\", \n                 \"position\": 1, \n                 \"price\": 5\n               }\n             ]\n}\n",
+                                            "schema": ""
+                                        }
+                                    ],
+                                    "responses": [
+                                        {
+                                            "name": "204",
+                                            "description": "",
+                                            "headers": [],
+                                            "body": "",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "Returned if is not authorized to update the Challenge",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "404",
+                                            "description": "Returned if the Challenge is not found",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Challenge not found\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Remove a Challenge",
+                            "description": "Remove a single Challenge\n",
+                            "method": "DELETE",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "204",
+                                            "description": "",
+                                            "headers": [],
+                                            "body": "",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "Returned if the user is not authorized to delete the Challenge",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "404",
+                                            "description": "Returned if the Challenge is not found",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Challenge not found\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Challenge Token",
+            "description": "",
+            "resources": [
+                {
+                    "name": "Challenge Token collection",
+                    "description": "A collection of Challenge Token\n\n",
+                    "uriTemplate": "/challenges/{id}/token",
+                    "model": {},
+                    "parameters": [],
+                    "actions": [
+                        {
+                            "name": "List all Challenge Token",
+                            "description": "Retrive all challenges tokens with all data for the given challenge\n",
+                            "method": "GET",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "200",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "[\n {\n   \"value\" : \"plop\", \n   \"challenge\": \"42\", \n   \"position\": 1, \n   \"price\": 5\n },\n {\n   \"value\" : \"plor\", \n   \"challenge\": \"42\", \n   \"position\": 1, \n   \"price\": 5\n },\n {\n   \"value\" : \"plot\", \n   \"challenge\": \"42\", \n   \"position\": 1, \n   \"price\": 5\n }\n]\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Create a Challenge Token",
+                            "description": "Create a new Challenge Token\n",
+                            "method": "POST",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [
+                                        {
+                                            "name": "",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"title\": \"H2G2\", \n  \"date\": Tue, 11 Nov 2014 19:35:14 GMT, \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ],
+                                    "responses": [
+                                        {
+                                            "name": "201",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"date\": Tue, 11 Nov 2014 19:35:14 GMT, \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "Returned if the user is not authoried to create an Challenge Token",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n   \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Challenge Token",
+                    "description": "A single Challenge Token object with all its details\n\n",
+                    "uriTemplate": "/challenges/{id}/tokens/{value}",
+                    "model": {},
+                    "parameters": [
+                        {
+                            "name": "id",
+                            "description": "Id of the challenge",
+                            "type": "string",
+                            "required": true,
+                            "default": "",
+                            "example": "1",
+                            "values": []
+                        }
+                    ],
+                    "actions": [
+                        {
+                            "name": "Retrieve a Challenge Token",
+                            "description": "Retrive a single Challenge Token\n",
+                            "method": "GET",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "200",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"date\": Tue, 11 Nov 2014 19:35:14 GMT, \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Update a Challenge Token",
+                            "description": "Update a single Challenge Token\n",
+                            "method": "PUT",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [
+                                        {
+                                            "name": "",
+                                            "description": "",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"id\": \"42\", \n  \"title\": \"H2G2\", \n  \"date\": Tue, 11 Nov 2014 19:35:14 GMT, \n  \"description\": \"Ultimate Question of Life, the Universe, and Everything\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ],
+                                    "responses": [
+                                        {
+                                            "name": "204",
+                                            "description": "",
+                                            "headers": [],
+                                            "body": "",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "Returned if is not authorized to update the Challenge Token",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "404",
+                                            "description": "Returned if the Challenge Token is not found",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Challenge Token not found\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Remove a Challenge Token",
+                            "description": "Remove a single Challenge Token\n",
+                            "method": "DELETE",
+                            "parameters": [],
+                            "examples": [
+                                {
+                                    "name": "",
+                                    "description": "",
+                                    "requests": [],
+                                    "responses": [
+                                        {
+                                            "name": "204",
+                                            "description": "",
+                                            "headers": [],
+                                            "body": "",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "403",
+                                            "description": "Returned if the user is not authorized to delete the Challenge Token",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Unauthorizd action\"\n}\n",
+                                            "schema": ""
+                                        },
+                                        {
+                                            "name": "404",
+                                            "description": "Returned if the Challenge Token is not found",
+                                            "headers": [
+                                                {
+                                                    "name": "Content-Type",
+                                                    "value": "application/json"
+                                                }
+                                            ],
+                                            "body": "{\n  \"error\" : \"Challenge Token not found\"\n}\n",
+                                            "schema": ""
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
