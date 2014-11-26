@@ -94,7 +94,7 @@ end
        entity = find(path, id)
        
        begin
-       entity.update(@data)
+       entity.update(@data) 
        rescue
        halt 400, {:errors => "No changes have been made"}
        end
