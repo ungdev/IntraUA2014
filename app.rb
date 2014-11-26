@@ -19,6 +19,8 @@ helpers do
     def authenticate(adminRequired)
         halt 400,  {:errors => "Missing parameters"}.to_json if @data["username"].nil? or @data["token"].nil?
         
+        @username = @data["username"]
+        
         user = User.first(:username=>@data["username"])
         
         halt 401,  {:errors => "User not found"}.to_json if user.nil?
@@ -40,7 +42,7 @@ end
 
 post "/auth" do
     
-    halt 400, {:errors => "Missing parameters"}.to_json if @data["username"].nil? or @data["password"].nil?
+    halt 400, {:errors => "Missing parameters"}.to_json if @data.nil? or @data["username"].nil? or @data["password"].nil?
     
     user = User.first(:username=>@data["username"])
     
@@ -63,7 +65,6 @@ post "/auth" do
     user.save
     
     {:token => user[:token], :admin => user[:admin]}.to_json
-    
 end
 
 ['tournaments', 'events', 'challenges'].each do |path|
@@ -73,28 +74,28 @@ end
   end
   
   post "/#{path}" do
-         authenticate(path == "tournament")
+         authenticate(path == "tournaments")
          @entity = Object.const_get(path[0...-1].capitalize).new(@data)
+         if (path == "tournaments") then @entity.owner = User.first(:username=>@username).id end
          halt 400, {:errors => @entity.errors}.to_json unless @entity.valid?
          @entity.save
          status 201
   end
 
   get %r{/#{path}/(?<id>\d+)} do |id|
-     content_type :json
       @entity = DB[path.to_sym].where(:id=>id.to_i).first
       halt 404,  {:errors => "#{path.capitalize} not found"}.to_json unless not @entity.nil? 
-      @entity.json
+      @entity.to_json
   end
   
   put %r{/#{path}/(?<id>\d+)} do |id|
-       authenticate(path == "tournament")
+       authenticate(path == "tournaments")
        halt 404,  {:errors => "#{path.capitalize} not found"}.to_json unless DB[path.to_sym].where(:id=>id.to_i).update (@data) > 0
        status 204
   end
   
   delete %r{/#{path}/(?<id>\d+)} do |id|
-       authenticate(path == "tournament")
+       authenticate(path == "tournaments")
        halt 404,  {:errors => "#{path.capitalize} not found"}.to_json unless DB[path.to_sym].where(:id=>id.to_i).delete > 0
        status 204
   end
