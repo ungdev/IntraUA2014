@@ -3,20 +3,22 @@ require 'sequel'
 
 
 class User < Sequel::Model
+   one_to_many :owned_tournaments, :class=>:Tournament, :key=>:owner_id
    plugin :validation_helpers
    def validate
     super
-    validate_type Integer, :point
+    validates_type Integer, :point
   end
 end
 
 class Tournament < Sequel::Model
+  many_to_one :owner, :class=>:User, :key=>:owner_id
   plugin :validation_helpers
   def validate
     super
     validates_presence [:title, :description, :owner]
     validates_type String, [:title, :description]
-    validates_type Integer, [:owner, :capacity, :teamSize]
+    validates_type Integer, [:capacity, :teamSize]
     validates_unique (:title)
   end
 end
@@ -44,7 +46,7 @@ end
 
 class ChallengeToken < Sequel::Model
   plugin :validation_helpers
-  many_to_one :challenge, :key=>:challenge
+  many_to_one :challenge, :key=>:challenge_id
   def validate
     super
     validates_presence [:title, :description, :date]

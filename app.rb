@@ -21,11 +21,11 @@ helpers do
         
         @username = @data["username"]
         
-        user = User.first(:username=>@data["username"])
+        @user = User.first(:username=>@data["username"])
         
-        halt 401,  {:errors => "User not found"}.to_json if user.nil?
-        halt 401,  {:errors => "Wrong token"}.to_json unless user.token == @data["token"]
-        halt 403,  {:errors => "Unauthorized action"}.to_json unless adminRequired == false or (adminRequired == true and user.admin == true)
+        halt 401,  {:errors => "User not found"}.to_json if @user.nil?
+        halt 401,  {:errors => "Wrong token"}.to_json unless @user.token == @data["token"]
+        halt 403,  {:errors => "Unauthorized action"}.to_json unless adminRequired == false or (adminRequired == true and @user.admin == true)
         
         @data.delete "username"
         @data.delete "token"
@@ -33,7 +33,7 @@ helpers do
     
     def find (model, id)
          entity = Object.const_get(model[0...-1].capitalize)[id.to_i]
-         halt 404,  {:errors => "#{model.capitalize} not found"}.to_json if entity.nil?
+         halt 404,  {:errors => "#{model[0...-1].capitalize} not found"}.to_json if entity.nil?
          entity
     end
 end
@@ -77,9 +77,9 @@ end
   end
   
   post "/#{path}" do
-         authenticate(path == "tournaments")
+         authenticate(path != "tournaments")
          @entity = Object.const_get(path[0...-1].capitalize).new(@data)
-         if (path == "tournaments") then @entity.owner = User.first(:username=>@username).id end
+         if (path == "tournaments") then @entity.owner = @user end
          halt 400, {:errors => @entity.errors}.to_json unless @entity.valid?
          @entity.save
          status 201
@@ -90,7 +90,7 @@ end
   end
   
   put %r{/#{path}/(?<id>\d+)} do |id|
-       authenticate(path == "tournaments")
+       authenticate(path != "tournaments")
        entity = find(path, id)
        
        begin
@@ -104,7 +104,7 @@ end
   end
   
   delete %r{/#{path}/(?<id>\d+)} do |id|
-       authenticate(path == "tournaments")
+       authenticate(path != "tournaments")
        find(path,id).destroy
        status 204
   end
@@ -115,3 +115,13 @@ error JSON::ParserError do
     {:errors => "Request body is not a correct JSON" }.to_json
 end
 
+error do
+    status 400
+    {:errors => "Some parameters are incorrects"}.to_json
+end
+
+put '/user/:id' do
+end
+
+put '/user/:username' do
+end

@@ -1,0 +1,53 @@
+# Logfile created on 2014-11-27 16:17:09 +0100 by logger.rb/44203
+I, [2014-11-27T16:17:32.513051 #4364]  INFO -- : (0.000000s) PRAGMA foreign_keys = 1
+I, [2014-11-27T16:17:32.513051 #4364]  INFO -- : (0.000000s) PRAGMA case_sensitive_like = 1
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) SELECT sqlite_version()
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) CREATE TABLE IF NOT EXISTS `schema_info` (`version` integer DEFAULT (0) NOT NULL)
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) SELECT * FROM `schema_info` LIMIT 1
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) SELECT 1 AS 'one' FROM `schema_info` LIMIT 1
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) SELECT count(*) AS 'count' FROM `schema_info` LIMIT 1
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) SELECT `version` FROM `schema_info` LIMIT 1
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : Begin applying migration version 9, direction: up
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) PRAGMA foreign_keys
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) PRAGMA foreign_keys = off
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) BEGIN
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) PRAGMA table_info('tournaments')
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) PRAGMA foreign_key_list('tournaments')
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) PRAGMA index_list('tournaments')
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) PRAGMA index_info('sqlite_autoindex_tournaments_1')
+E, [2014-11-27T16:17:32.583051 #4364] ERROR -- : SQLite3::SQLException: no such table: tournaments_backup0: SELECT NULL AS 'nil' FROM `tournaments_backup0` LIMIT 1
+I, [2014-11-27T16:17:32.583051 #4364]  INFO -- : (0.000000s) PRAGMA index_list('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.010000s) ALTER TABLE `tournaments` RENAME TO `tournaments_backup0`
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) CREATE TABLE `tournaments`(`id` integer DEFAULT (NULL) NOT NULL PRIMARY KEY, `title` varchar(255) DEFAULT (NULL) NOT NULL UNIQUE, `description` text DEFAULT (NULL) NOT NULL, `owner` integer DEFAULT (NULL) NOT NULL, `capacity` integer DEFAULT (NULL) NOT NULL, `teamSize` integer DEFAULT (1) NOT NULL, `data` text DEFAULT (NULL) NULL)
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) INSERT INTO `tournaments`(`id`, `title`, `description`, `owner`, `capacity`, `teamSize`, `data`) SELECT `id`, `title`, `description`, `owner`, `capacity`, `teamSize`, `data` FROM `tournaments_backup0`
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) DROP TABLE `tournaments_backup0`
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA table_info('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA foreign_key_list('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA index_list('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA index_info('sqlite_autoindex_tournaments_1')
+E, [2014-11-27T16:17:32.593051 #4364] ERROR -- : SQLite3::SQLException: no such table: tournaments_backup0: SELECT NULL AS 'nil' FROM `tournaments_backup0` LIMIT 1
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA index_list('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) ALTER TABLE `tournaments` RENAME TO `tournaments_backup0`
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) CREATE TABLE `tournaments`(`id` integer DEFAULT (NULL) NOT NULL PRIMARY KEY, `title` varchar(255) DEFAULT (NULL) NOT NULL UNIQUE, `description` text DEFAULT (NULL) NOT NULL, `capacity` integer DEFAULT (NULL) NOT NULL, `teamSize` integer DEFAULT (1) NOT NULL, `data` text DEFAULT (NULL) NULL)
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) INSERT INTO `tournaments`(`id`, `title`, `description`, `capacity`, `teamSize`, `data`) SELECT `id`, `title`, `description`, `capacity`, `teamSize`, `data` FROM `tournaments_backup0`
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) DROP TABLE `tournaments_backup0`
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA table_info('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA foreign_key_list('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA index_list('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA index_info('sqlite_autoindex_tournaments_1')
+E, [2014-11-27T16:17:32.593051 #4364] ERROR -- : SQLite3::SQLException: no such table: tournaments_backup0: SELECT NULL AS 'nil' FROM `tournaments_backup0` LIMIT 1
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA index_list('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) ALTER TABLE `tournaments` RENAME TO `tournaments_backup0`
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) CREATE TABLE `tournaments`(`id` integer DEFAULT (NULL) NOT NULL PRIMARY KEY, `title` varchar(255) DEFAULT (NULL) NOT NULL UNIQUE, `description` text DEFAULT (NULL) NOT NULL, `capacity` integer DEFAULT (NULL) NOT NULL, `teamSize` integer DEFAULT (1) NOT NULL, `data` text DEFAULT (NULL) NULL)
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) INSERT INTO `tournaments`(`id`, `title`, `description`, `capacity`, `teamSize`, `data`) SELECT `id`, `title`, `description`, `capacity`, `teamSize`, `data` FROM `tournaments_backup0`
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) DROP TABLE `tournaments_backup0`
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA table_info('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA foreign_key_list('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA index_list('tournaments')
+I, [2014-11-27T16:17:32.593051 #4364]  INFO -- : (0.000000s) PRAGMA index_info('sqlite_autoindex_tournaments_1')
+E, [2014-11-27T16:17:32.603051 #4364] ERROR -- : SQLite3::SQLException: no such table: tournaments_backup0: SELECT NULL AS 'nil' FROM `tournaments_backup0` LIMIT 1
+I, [2014-11-27T16:17:32.603051 #4364]  INFO -- : (0.000000s) PRAGMA index_list('tournaments')
+I, [2014-11-27T16:17:32.603051 #4364]  INFO -- : (0.000000s) ALTER TABLE `tournaments` RENAME TO `tournaments_backup0`
+E, [2014-11-27T16:17:32.603051 #4364] ERROR -- : SQLite3::SQLException: unknown column "owner_id" in foreign key definition: CREATE TABLE `tournaments`(`id` integer DEFAULT (NULL) NOT NULL PRIMARY KEY, `title` varchar(255) DEFAULT (NULL) NOT NULL UNIQUE, `description` text DEFAULT (NULL) NOT NULL, `capacity` integer DEFAULT (NULL) NOT NULL, `teamSize` integer DEFAULT (1) NOT NULL, `data` text DEFAULT (NULL) NULL, FOREIGN KEY (`owner_id`) REFERENCES `users`(`id`))
+I, [2014-11-27T16:17:32.603051 #4364]  INFO -- : (0.000000s) ROLLBACK
+I, [2014-11-27T16:17:32.603051 #4364]  INFO -- : (0.000000s) PRAGMA foreign_keys = on
