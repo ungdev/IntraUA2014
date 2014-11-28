@@ -5,6 +5,7 @@ require 'json'
 require 'digest'
 require 'base64'
 
+require "sinatra/cookies"
 require 'dotenv'
 Dotenv.load
 
@@ -73,7 +74,12 @@ end
 ['tournaments', 'events', 'challenges'].each do |path|
     
   get "/#{path}" do
-     DB[path.to_sym].all.to_json
+     entities = Object.const_get(path[0...-1].capitalize).all
+      r = {}
+      entities.each  do  |e|
+          r[e.id] = e.to_hash
+        end  
+    r.to_json
   end
   
   post "/#{path}" do
