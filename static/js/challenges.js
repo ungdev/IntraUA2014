@@ -69,7 +69,7 @@
             var id = $('#challengeId').val();
 
             $.ajax({
-                type: 'post'
+                type: 'post',
                 url: '/challenge/join/' + id,
                 data: {
                     player: player
