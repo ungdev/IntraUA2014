@@ -12,7 +12,7 @@
 
     $.ajax({
         type: 'get',
-        url: '/challenge',
+        url: '/challenges',
         success: function (msg) {
             challenges = JSON.parse(msg);
             render();
@@ -70,7 +70,7 @@
 
             $.ajax({
                 type: 'post',
-                url: '/challenge/join/' + id,
+                url: '/challenges/join/' + id,
                 data: {
                     player: player
                 }
