@@ -1,60 +1,36 @@
 require 'rubygems'
 require 'sequel'
 
-
+class Sequel::Model
+    plugin :schema
+    plugin :validation_helpers
+    plugin :auto_validations, :not_null=>:presence
+    def to_json (arg)
+        @values.to_json
+    end
+    
+    def to_s
+        @values.to_json
+    end
+end
 class User < Sequel::Model
    one_to_many :owned_tournaments, :class=>:Tournament, :key=>:owner_id
-   
   many_to_many :tournaments
-   plugin :validation_helpers
-   def validate
-    super
-    validates_type Integer, :point
-  end
 end
 
 class Tournament < Sequel::Model
-  many_to_one :owner, :class=>:User, :key=>:owner_id
+    many_to_one :owner, :class=>:User, :key=>:owner_id
   many_to_many :users
-    
-  plugin :validation_helpers
-  def validate
-    super
-    validates_presence [:title, :description, :owner]
-    validates_type String, [:title, :description]
-    validates_type Integer, [:capacity, :teamSize]
-    validates_unique (:title)
-  end
 end
 
 class Event < Sequel::Model
-  plugin :validation_helpers
-  def validate
-    super
-    validates_presence [:title, :description, :date]
-    validates_type String, [:title, :description]
-    validates_unique (:title)
-  end
 end
 
 class Challenge < Sequel::Model
-  plugin :validation_helpers
-  one_to_many :challenges_tokens, :key=>:challenge
-  def validate
-    super
-    validates_presence [:title, :description, :date]
-    validates_type String, [:title, :description]
-    validates_unique (:title)
-  end
+  one_to_many :challenge_tokens, :key=>:challenge_id
 end
 
 class ChallengeToken < Sequel::Model
-  plugin :validation_helpers
   many_to_one :challenge, :key=>:challenge_id
-  def validate
-    super
-    validates_presence [:value, :challenge_id]
-    validates_type Integer, [:position, :challenge_id]
-    validate_type String, :value
-  end
+  many_to_one :deleter, :class=>:User, :key=>:deleter_id
 end

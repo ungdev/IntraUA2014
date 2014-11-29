@@ -7,7 +7,7 @@ Sequel.migration do
       Integer  :owner_id, :null=>false
       Integer  :capacity, :null=>false
       Integer  :teamSize, :null=>false, :default=>1
-      foreign_key  [:owner_id], :users, :key=>:id, :foreign_key_constraint_name=>'fk_owner_users', :name=>:owner_fk
+     foreign_key  [:owner_id], :users, :key=>:id, :foreign_key_constraint_name=>'fk_owner_users', :name=>'tournaments_users_owner_fkey'
     end
   end
 
