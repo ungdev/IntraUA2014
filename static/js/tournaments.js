@@ -2,7 +2,7 @@
 
 (function () {
     'use strict';
-    var tournaments = {
+    var _tournaments = {
         "Tournoi 1": {
             "name": "Tournoi 1",
             "teams": [
@@ -123,13 +123,12 @@
         type: 'get',
         url: '/tournament',
         success: function (msg) {
-            tournaments = JSON.parse(msg);
-            render();
+            render(msg);
         }
     });
 
     // Render links
-    function render () {
+    function render (tournaments) {
         var $list = $('#list');
         Object.keys(tournaments).forEach(function (tournament) {
             var $h3 = $('<h3/>');
@@ -177,7 +176,7 @@
         });
     }
 
-    render();
+    render(_tournaments);
 
     // Tournament saving
     /**

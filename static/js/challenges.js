@@ -2,25 +2,17 @@
 
 (function () {
     'use strict';
-    var challenges = {
-        challenge1: {
-            id: 1,
-            title: 'Défi 1',
-            description: 'Truc truc'
-        }
-    };
 
     $.ajax({
         type: 'get',
         url: '/challenges',
         success: function (msg) {
-            challenges = JSON.parse(msg);
-            render();
+            render(msg);
         }
     });
 
     // Render links
-    function render () {
+    function render (challenges) {
         var $challengesList = $('#challengesList');
         Object.keys(challenges).forEach(function (name, index) {
             var $li = $('<li/>');
@@ -78,5 +70,5 @@
         });
     }
 
-    render();
+    render({});
 }());

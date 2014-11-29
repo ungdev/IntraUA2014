@@ -4,25 +4,16 @@
 (function () {
     'use strict';
 
-    var challenges = {
-        challenge1: {
-            id: 1,
-            title: 'Défi 1',
-            description: 'Truc truc'
-        }
-    };
-
     $.ajax({
         type: 'get',
         url: '/challenge',
         success: function (msg) {
-            challenges = JSON.parse(msg);
-            render();
+            render(msg);
         }
     });
 
     // Render links
-    function render () {
+    function render (challenges) {
         var $list = $('#list');
 
         Object.keys(challenges).forEach(function (challenge) {
@@ -52,7 +43,7 @@
             });
         });
     }
-    render();
+    render({});
 
     /**
      * Checks if the number is a integer
