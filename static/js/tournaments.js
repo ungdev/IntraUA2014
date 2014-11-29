@@ -119,53 +119,65 @@
         }
     };
 
+    $.ajax({
+        type: 'get',
+        url: '/tournament',
+        success: function (msg) {
+            tournaments = JSON.parse(msg);
+            render();
+        }
+    });
 
     // Render links
-    var $list = $('#list');
-    Object.keys(tournaments).forEach(function (tournament) {
-        var $h3 = $('<h3/>');
-        var $a = $('<a/>')
-                    .attr('href', '#')
-                    .attr('data-tournament', tournament)
-                    .text(tournaments[tournament].name);
-        $a.appendTo($h3);
-        $list.append($h3);
-    });
-
-    var $links  = $('[data-tournament]');
-    var $target = $('#tournamentDetails');
-    var $infos  = $('#tournamentInfos');
-
-    $links.off('click').click(function (e) {
-        e.preventDefault();
-
-        var $self = $(this);
-        var link = $self.attr('data-tournament');
-
-        if (!link || !tournaments.hasOwnProperty(link)) {
-            return;
-        }
-
-        $target.bracket({
-            init: tournaments[link],
-            save: $.noop,
-            decorator: {
-                edit: window.bracketOnEdit,
-                render: window.bracketOnRender
-            }
+    function render () {
+        var $list = $('#list');
+        Object.keys(tournaments).forEach(function (tournament) {
+            var $h3 = $('<h3/>');
+            var $a = $('<a/>')
+                        .attr('href', '#')
+                        .attr('data-tournament', tournament)
+                        .text(tournaments[tournament].name);
+            $a.appendTo($h3);
+            $list.append($h3);
         });
-        $('.doubleElimination').remove();
 
-        tournaments[link].elem = $target;
+        var $links  = $('[data-tournament]');
+        var $target = $('#tournamentDetails');
+        var $infos  = $('#tournamentInfos');
 
-        $('.tournamentSaver').remove();
-        var $button = $('<button/>')
-                        .addClass('btn btn-success btn-xs tournamentSaver')
-                        .attr('data-currentTournament', link)
-                        .text('Envoyer les modifications')
-                        .click(saveIt);
-        $self.after($button);
-    });
+        $links.off('click').click(function (e) {
+            e.preventDefault();
+
+            var $self = $(this);
+            var link = $self.attr('data-tournament');
+
+            if (!link || !tournaments.hasOwnProperty(link)) {
+                return;
+            }
+
+            $target.bracket({
+                init: tournaments[link],
+                save: $.noop,
+                decorator: {
+                    edit: window.bracketOnEdit,
+                    render: window.bracketOnRender
+                }
+            });
+            $('.doubleElimination').remove();
+
+            tournaments[link].elem = $target;
+
+            $('.tournamentSaver').remove();
+            var $button = $('<button/>')
+                            .addClass('btn btn-success btn-xs tournamentSaver')
+                            .attr('data-currentTournament', link)
+                            .text('Envoyer les modifications')
+                            .click(saveIt);
+            $target.after($button);
+        });
+    }
+
+    render();
 
     // Tournament saving
     /**

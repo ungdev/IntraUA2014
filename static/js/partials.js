@@ -43,16 +43,15 @@
         // Clear bootsrap-datetimepicker
         $('script').last().nextUntil().remove();
 
-        if (e.oldURL) {
-            return;
-        }
         var linkArr = location.hash.split('#!/');
         if (linkArr.length === 2) {
             var link = linkArr[1].trim();
             var $target = $('#page-content-wrapper');
             var $link = $('[data-load-partial="' + link + '"]');
             $link.addClass('active');
-            loadPartial($target, link);
+            loadPartial($target, link, function () {
+                bindLinks();
+            });
         }
     };
     window.onhashchange({

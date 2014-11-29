@@ -4,6 +4,56 @@
 (function () {
     'use strict';
 
+    var challenges = {
+        challenge1: {
+            id: 1,
+            title: 'Défi 1',
+            description: 'Truc truc'
+        }
+    };
+
+    $.ajax({
+        type: 'get',
+        url: '/challenge',
+        success: function (msg) {
+            challenges = JSON.parse(msg);
+            render();
+        }
+    });
+
+    // Render links
+    function render () {
+        var $list = $('#list');
+
+        Object.keys(challenges).forEach(function (challenge) {
+            var $li = $('<li/>');
+            var $a = $('<a href="#">Supprimer</a>');
+
+            $a.attr('data-tournament', challenge);
+            $li.text(challenges[challenge].title + ' - ');
+            $li.append($a);
+
+            $list.append($li);
+        });
+
+        $('[data-tournament]').off('click').click(function (e) {
+            e.preventDefault();
+
+            if (!window.confirm('Supprimer l\'événement ?')) {
+                return;
+            }
+
+            $.ajax({
+                type: 'delete',
+                url: '/challenge/' + $(this).attr('data-tournament'),
+                success: function () {
+                    location.reload();
+                }
+            });
+        });
+    }
+    render();
+
     /**
      * Checks if the number is a integer
      * @param   {Number}  a The number
@@ -36,11 +86,30 @@
                             .attr('name', 'tokensPrices[]')
                             .addClass('form-control')
                             .addClass('input-sm')
+                            .addClass('tokens')
                             .attr('placeholder', '10')
                             .attr('required', '');
             $li.text('Token ' + (i + 1) + ' :');
             $li.append($input);
             $tokensList.append($li);
         }
+    });
+
+    $submit.off('click').click(function (e) {
+        e.preventDefault();
+        var title = $('#title');
+        var descr = $('#description');
+        var vals = [];
+        var tokens = $('.tokens').each(function () {
+            vals.push(parseInt($(this).val(), 10));
+        });
+        $.ajax({
+            type: 'post',
+            url: '/challenges/',
+            data: {
+                title: title,
+                description: descr
+            }
+        });
     });
 }());

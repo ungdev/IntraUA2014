@@ -240,4 +240,5 @@
     }
 
     window.tournamentAlgo = generator;
+    window.genBracketObjFromList = genBracketObjFromList;
 }());

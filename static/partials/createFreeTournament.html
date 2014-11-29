@@ -2,7 +2,7 @@
 
 <h1>Créer un tournoi</h1>
 
-<form method="post" action="">
+<form>
     <div class="form-group">
         <label for="name">Nom du tournoi :</label>
         <input type="text" name="title" id="title" class="form-control" placeholder="5v5 CS:Go">
@@ -16,7 +16,7 @@
         <input type="number" name="maxplayers" id="maxplayers" class="form-control" placeholder="10">
     </div>
     <div class="form-group">
-        <label for="inTeam">Nombre de joueurs par team (1 si élémination directe) :</label>
+        <label for="inTeam">Nombre de joueurs par team (1 si jeu sans équipe) :</label>
         <input type="number" name="inTeam" id="inTeam" class="form-control" placeholder="5">
     </div>
     <p>
@@ -25,4 +25,5 @@
     <button type="submit" id="submit" class="btn btn-success btn-disabled" disabled>Créer le tournoi</button>
 </form>
 
+<script src="js/tournaments.algo.js"></script>
 <script src="js/createFreeTournament.js"></script>

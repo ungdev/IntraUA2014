@@ -16,7 +16,40 @@
         return Math.floor(a) === a;
     }
 
-    $inTeam.add($maxplayers).on('keyup', function () {
+    $submit.off('click').click(function (e) {
+        e.preventDefault();
+        var name = $('#title').val();
+        var desc = $('#description').val();
+        var maxp = $('#maxplayers').val();
+        var inTeam = $('#inTeam').val();
+        var nbTeams = parseInt($('#nbTeams').text(), 10);
+
+        if (!name || !desc || !maxp || !inTeam) {
+            return;
+        }
+
+        var list = [];
+        while(nbTeams--) {
+            list.push('Equipe ' + (nbTeams + 1).toString());
+        }
+
+        var tournament = genBracketObjFromList(name, list);
+
+        $.ajax({
+            type: 'post',
+            url: /tournament/,
+            data: {
+                title: name,
+                owner: localStorage.getItem('id'),
+                description: desc,
+                capacity: maxp,
+                teamsize: inTeam,
+                data: tournament
+            }
+        });
+    });
+
+    $inTeam.add($maxplayers).off('keyup').keyup(function () {
         var maxplayers = parseFloat($maxplayers.val(), 10);
         var inTeam = parseFloat($inTeam.val(), 10);
         var $span = $('<span/>')
