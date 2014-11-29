@@ -100,11 +100,13 @@ post "/tournaments" do
 end
 
 get  '/user/:id' do |id|
+    authenticate!
+    User.with_pk!(id).to_json
 end
 
 put '/user/:id' do |id|
-    user = User.with_pk!(id)
     authenticate!
+    user = User.with_pk!(id)
     user.update JSON.parse request.body.read 
     status 204
 end
@@ -253,12 +255,14 @@ get '/partials/:page.html' do |page|
 send_file File.expand_path("../static/partials/#{page}.html",  __FILE__)
 end
 
+
 get '/index.html' do
     content_type :html
-    if  not @user.nil? and @user.admin 
-        send_file File.expand_path('../static/index.admin.html',  __FILE__) 
-    else 
+    redirect '/partials/login.html' unless @user.nil?
+    unless @user.admin 
         send_file File.expand_path('../static/index.html',  __FILE__) 
+    else 
+        send_file File.expand_path('../static/index.admin.html',  __FILE__) 
     end
 end
 
