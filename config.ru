@@ -15,4 +15,8 @@ map "/css" do
     run Rack::Directory.new("./static/css")
 end
 
+map "/img" do
+    run Rack::Directory.new("./static/img")
+end
+
 run Sinatra::Application 
