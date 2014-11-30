@@ -17,8 +17,9 @@
 
     <div class="container">
 
-        <form class="form-signin" role="form" method="post" action="login">
+        <form id="loginForm" class="form-signin" role="form" method="post" action="login">
             <h2 class="form-signin-heading">Connexion Intra UA2014</h2>
+            <p class="text-danger" id="err" style="display: none;">Impossible de s'authentifer</p>
             <label for="login" class="sr-only">Identifiant</label>
             <input type="text" id="login" name="login" class="form-control" placeholder="Identifiant" required autofocus>
             <label for="password" class="sr-only">Mot de passe</label>
@@ -27,6 +28,9 @@
         </form>
 
     </div>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/bootstrap.min.js"></script>
 
     <script src="js/login.js"></script>
 </body>
