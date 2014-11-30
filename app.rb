@@ -162,7 +162,7 @@ post "/events" do
     authenticate!
     event = Event.new JSON.parse request.body.read
     halt 400, {'Content-Type' => 'application/json'},{:errors => event.errors}.to_json unless event.valid?
-    @entity.save
+    event.save
     status 201
 end
 
