@@ -28,22 +28,22 @@ use Rack::Session::Pool, :expire_after => 2592000
 helpers do
     def authenticate
         halt 401, {'Content-Type' => 'application/json'}, {:errors => "Not logged in"}.to_json if session[:username].nil? or session[:token].nil?
-        
+
         @user = User.first(:username=>session[:username])
 
         halt 401, {'Content-Type' => 'application/json'}, {:errors => "User not found"}.to_json if @user.nil?
-        halt 401,  {'Content-Type' => 'application/json'}, {:errors => "Wrong token"}.to_json unless @user.token == session[:token] 
+        halt 401,  {'Content-Type' => 'application/json'}, {:errors => "Wrong token"}.to_json unless @user.token == session[:token]
     end
 
     def authenticate!
         authenticate
         halt 403,  {:errors => "Unauthorized action"}.to_json unless @user.admin
     end
-    
+
     def authenticate?
         if not session[:username].nil? then @user = User.first(:username=>session[:username])  else return false end
-        return (not @user.nil? and @user.token == session[:token]) 
-    end 
+        return (not @user.nil? and @user.token == session[:token])
+    end
 
     def find (model, id)
         entity = Object.const_get(model[0...-1].capitalize)[id.to_i]
@@ -53,16 +53,16 @@ helpers do
 end
 
 set(:methods) {|*verbs|
-    condition { 
+    condition {
         verbs.any?{|v| v == request.request_method }
-        } 
+        }
     }
 
 post "/login" do
     data = JSON.parse request.body.read
     username = data["username"]
     password = data["password"]
-    
+
     halt 400, {'Content-Type' => 'application/json'}, {:errors => "Missing parameters"}.to_json if data.nil? or username.nil? or password.nil?
 
     user = User.first :username=>username
@@ -110,7 +110,7 @@ end
 put '/user/:id' do |id|
     user = User.with_pk!(id)
     authenticate!
-    user.update JSON.parse request.body.read 
+    user.update JSON.parse request.body.read
     status 204
 end
 
@@ -155,7 +155,7 @@ end
 
 get "/events" do
     content_type :json
-    Events.to_hash(:id).to_json
+    Event.to_hash(:id).to_json
 end
 
 post "/events" do
@@ -211,7 +211,7 @@ end
 put "/challenges/:id" do |id|
     challenge = Challenge.with_pk!(id)
     authenticate!
-    challenge.update JSON.parse request.body.read 
+    challenge.update JSON.parse request.body.read
     status 204
 end
 
@@ -242,7 +242,7 @@ patch '/challenges/:id' do |id|
     status 200
 end
 
-get '/login.html' do 
+get '/login.html' do
     content_type :html
     send_file File.expand_path('../static/login.html',  __FILE__)
 end
@@ -262,10 +262,10 @@ get '/index.html' do
     content_type :html
     authenticate?
     redirect '/login.html' if not authenticate?
-    if @user.admin 
-        send_file File.expand_path('../static/index.admin.html',  __FILE__) 
-    else 
-        send_file File.expand_path('../static/index.html',  __FILE__) 
+    if @user.admin
+        send_file File.expand_path('../static/index.admin.html',  __FILE__)
+    else
+        send_file File.expand_path('../static/index.html',  __FILE__)
     end
 end
 
