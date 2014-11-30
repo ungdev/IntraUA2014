@@ -39,6 +39,11 @@ helpers do
         authenticate
         halt 403,  {:errors => "Unauthorized action"}.to_json unless @user.admin
     end
+    
+    def authenticate?
+        if not session[:username].nil? then @user = User.first(:username=>session[:username])  else return false end
+        return (not @user.nil? and @user.token == session[:token]) 
+    end 
 
     def find (model, id)
         entity = Object.const_get(model[0...-1].capitalize)[id.to_i]
@@ -255,8 +260,8 @@ end
 
 get '/index.html' do
     content_type :html
-    authenticate
-    redirect '/login.html' unless not @user.nil?
+    authenticate?
+    redirect '/login.html' if not authenticate?
     if @user.admin 
         send_file File.expand_path('../static/index.admin.html',  __FILE__) 
     else 
