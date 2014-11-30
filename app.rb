@@ -191,11 +191,13 @@ get "/challenges" do
 end
 
 post "/challenges" do
+    content_type :json
     authenticate!
     challenge = Challenge.new JSON.parse request.body.read
-    halt 400,{'Content-Type' => 'application/json'}, {:errors => @entity.errors}.to_json unless challenge.valid?
+    halt 400, {:errors => @entity.errors}.to_json unless challenge.valid?
     challenge.save
     status 201
+    challenge.to_hash.to_json
 end
 
 get "/challenges/:id" do |id|
