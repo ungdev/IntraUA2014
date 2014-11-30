@@ -237,7 +237,7 @@ end
 delete '/challenges/:id/check/:token' do |id,token|
     challenge = Challenge.with_pk!(id)
     halt 404, {'Content-Type' => 'application/json'}, {:errors => "Challenge not found"}.to_json if challenge.nil?
-    token = challenge.challenge_tokens[:value=>token]
+    token = challenge.challenge_tokens[:name=>token]
     halt 404, {'Content-Type' => 'application/json'},{:errors => "Token not found"}.to_json if token.nil?
     halt 400, {'Content-Type' => 'application/json'}, {:errors => "Token not found"}.to_json unless token.deleter.nil?
     token.deleted_at = Time.now.getutc
