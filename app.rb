@@ -255,7 +255,7 @@ end
 
 get '/index.html' do
     content_type :html
-    autentitcate
+    authenticate
     redirect '/login.html' unless not @user.nil?
     if @user.admin 
         send_file File.expand_path('../static/index.admin.html',  __FILE__) 
