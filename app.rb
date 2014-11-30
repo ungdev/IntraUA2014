@@ -217,6 +217,15 @@ put "/challenges/:id" do |id|
     status 204
 end
 
+patch '/challenges/:id' do |id|
+    challenge = Challenge.with_pk!(id)
+    halt 404, {'Content-Type' => 'application/json'},{:errors => "Challenge not found"}.to_json if challenge.nil?
+    challenge.add_challenge_token JSON.parse request.body.read
+    halt 400, {'Content-Type' => 'application/json'},{:errors => @entity.errors}.to_json unless challenge.valid?
+    challenge.save
+    status 200
+end
+
 delete "/challenges/:id" do |id|
     challenge = Challenge.with_pk!(id)
     authenticate!
@@ -235,14 +244,7 @@ delete '/challenges/:id/check/:token' do |id,token|
     token.deleter = @user
 end
 
-patch '/challenges/:id' do |id|
-    challenge = Challenge.with_pk!(id)
-    halt 404, {'Content-Type' => 'application/json'},{:errors => "Challenge not found"}.to_json if challenge.nil?
-    challenge.add_challenge_token JSON.parse request.body.read
-    halt 400, {'Content-Type' => 'application/json'},{:errors => @entity.errors}.to_json unless challenge.valid?
-    challenge.save
-    status 200
-end
+
 
 get '/login.html' do
     content_type :html
