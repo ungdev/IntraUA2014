@@ -30,7 +30,7 @@
         $('[data-tournament]').off('click').click(function (e) {
             e.preventDefault();
 
-            if (!window.confirm('Supprimer l\'événement ?')) {
+            if (!window.confirm('Supprimer le challenge ?')) {
                 return;
             }
 

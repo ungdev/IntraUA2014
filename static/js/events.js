@@ -26,8 +26,9 @@
                 autoStart: false,
                 countdown: true
             });
-            var thisDate = new Date().getTime();
-            clock.setTime((events[name].date - thisDate) / 1000);
+            var eventDate = moment(events[name].date, 'YYYY-MM-DD HH:mm:ss Z');
+            var diff = eventDate.diff(moment()) / 1000;
+            clock.setTime(diff);
             clock.start();
 
             $list.append($h3).append($clock).append($descritpion);

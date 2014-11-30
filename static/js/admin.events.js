@@ -24,12 +24,33 @@
 
     function render (events) {
         var $list = $('#list');
-        Object.keys(events).forEach(function (event) {
+        Object.keys(events).forEach(function (e) {
+            console.log(events[e]);
             var $li = $('<li/>');
-            var $a = $('<a/>').attr('href').text('Supprimer');
-            $li.text(events[event].name);
+            var $a = $('<a/>')
+                        .attr('href', '#')
+                        .attr('data-event', events[e].id)
+                        .text('Supprimer')
+                        .addClass('deleteEvent');
+            $li.text(events[e].title + ' - ');
             $li.append($a);
             $list.append($li);
+        });
+
+        $('.deleteEvent').off('click').click(function (e) {
+            e.preventDefault();
+
+            if (!window.confirm('Supprimer l\'événement ?')) {
+                return;
+            }
+
+            $.ajax({
+                type: 'delete',
+                url: '/events/' + $(this).attr('data-event'),
+                success: function () {
+                    location.reload();
+                }
+            });
         });
     }
     render({});
@@ -46,13 +67,10 @@
             data: JSON.stringify({
                 title: $title.val(),
                 description: $desc.val(),
-                date: parseInt(moment($date.val(), 'DD/MM/YYYY HH:mm').format('YYYY/MM/DD HH:mm'), 10)
+                date: moment($date.val(), 'DD/MM/YYYY HH:mm').format('YYYY/MM/DD HH:mm')
             }),
-            success: function (msg) {
-                console.log(msg);
-            },
-            error: function (msg) {
-                console.log(msg);
+            success: function () {
+                location.reload();
             }
         });
     });
