@@ -48,7 +48,7 @@
 
             $.ajax({
                 type: 'delete',
-                url: '/challenge/' + $(this).attr('data-tournament'),
+                url: '/challenges/' + $(this).attr('data-tournament'),
                 success: function () {
                     location.reload();
                 }
