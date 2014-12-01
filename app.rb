@@ -230,6 +230,10 @@ delete "/challenges/:id" do |id|
     challenge = Challenge.with_pk!(id)
     authenticate!
     halt 403, {'Content-Type' => 'application/json'}, {:errors => "Unauthorized action"}.to_json unless @user.admin
+
+    tokens = challenge.challenge_tokens_dataset.each do |token|
+        token.destroy
+    end
     challenge.destroy
     status 204
 end
