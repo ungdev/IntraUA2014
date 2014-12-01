@@ -273,6 +273,9 @@ get '/index.html' do
     end
 end
 
+get '/' do
+    redirect '/index.html'
+end
 
 error JSON::ParserError do
     status 400
