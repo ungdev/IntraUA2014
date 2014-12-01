@@ -23,7 +23,7 @@
     });
 
     function render (events) {
-        var $list = $('#list');
+        var $list = $('#list').empty();
         Object.keys(events).forEach(function (e) {
             console.log(events[e]);
             var $li = $('<li/>');

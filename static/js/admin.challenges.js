@@ -6,15 +6,27 @@
 
     $.ajax({
         type: 'get',
-        url: '/challenge',
+        url: '/challenges',
         success: function (msg) {
             render(msg);
         }
     });
 
+    function makeid () {
+        var text = '';
+        var possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+        var i = 5;
+        while(i--) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+
+        return text;
+    }
+
     // Render links
     function render (challenges) {
-        var $list = $('#list');
+        var $list = $('#list').empty();
 
         Object.keys(challenges).forEach(function (challenge) {
             var $li = $('<li/>');
@@ -80,7 +92,7 @@
                             .addClass('tokens')
                             .attr('placeholder', '10')
                             .attr('required', '');
-            $li.text('Token ' + (i + 1) + ' :');
+            $li.html('Token ' + (i + 1) + ' (<span class="tokenVal">' + makeid() + '</span>) :');
             $li.append($input);
             $tokensList.append($li);
         }
@@ -88,18 +100,41 @@
 
     $submit.off('click').click(function (e) {
         e.preventDefault();
-        var title = $('#title');
-        var descr = $('#description');
+        var $title = $('#title');
+        var $descr = $('#description');
         var vals = [];
         var tokens = $('.tokens').each(function () {
-            vals.push(parseInt($(this).val(), 10));
+            var token = $(this).parent().children('.tokenVal').text();
+            var value = parseInt($(this).val(), 10);
+            vals.push({
+                name: token,
+                value: value
+            });
         });
+
         $.ajax({
             type: 'post',
-            url: '/challenges/',
-            data: {
-                title: title,
-                description: descr
+            url: '/challenges',
+            data: JSON.stringify({
+                title: $title.val(),
+                description: $descr.val()
+            }),
+            success: function (msg) {
+                var id = msg.id;
+                var dones = 0;
+                vals.forEach(function (val) {
+                    $.ajax({
+                        type: 'patch',
+                        url: '/challenges/' + id,
+                        data: JSON.stringify(val),
+                        success: function () {
+                            dones++;
+                            if (dones === vals.length) {
+                                location.reload();
+                            }
+                        }
+                    });
+                });
             }
         });
     });

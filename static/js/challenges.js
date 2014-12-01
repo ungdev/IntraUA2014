@@ -13,7 +13,7 @@
 
     // Render links
     function render (challenges) {
-        var $challengesList = $('#challengesList');
+        var $challengesList = $('#challengesList').empty();
         Object.keys(challenges).forEach(function (name, index) {
             var $li = $('<li/>');
             var $a = $('<a/>')

@@ -129,7 +129,7 @@
 
     // Render links
     function render (tournaments) {
-        var $list = $('#list');
+        var $list = $('#list').empty();
         Object.keys(tournaments).forEach(function (tournament) {
             var $h3 = $('<h3/>');
             var $a = $('<a/>')

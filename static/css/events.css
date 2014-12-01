@@ -4,20 +4,9 @@
 
 .clock {
     margin-left: 40px;
-    zoom: 0.6;
-    -webkit-transform: scale(0.6);
-       -moz-transform: scale(0.6);
-         -o-transform: scale(0.6);
-            transform: scale(0.6);
-    -webkit-transform-origin: 0 0;
-       -moz-transform-origin: 0 0;
-         -o-transform-origin: 0 0;
-            transform-origin: 0 0;
 }
 
 .description {
     font-size: 120%;
     margin-left: 25px;
-    position: relative;
-    top: -20px;
 }
