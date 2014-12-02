@@ -149,6 +149,14 @@ put "/tournaments/:id" do |id|
     status 204
 end
 
+patch '/tournaments/:tournament_id/suscribe/:new_result' do |id, new_result|
+    tournament = Tournament.with_pk!(id)
+    authenticate
+    tournament.data_teams = new_result
+    tournament.save
+    status 204
+end
+
 patch '/tournaments/:tournament_id/users/:user_id' do |tournament_id, user_id|
     authenticate
     tournament = Tournament.with_pk!(tournament_id)
