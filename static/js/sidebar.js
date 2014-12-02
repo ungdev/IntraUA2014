@@ -12,6 +12,8 @@
                 1: ['Bleue', 'rgba(0, 0, 255, 0.6)', '#fff']
             };
 
+            window.isAdmin = msg.admin;
+
             $('#points').text('Points : ' + msg.point).css('color', '#fff');
             $('#color').css({
                 fontWeight: 'bold',
@@ -19,6 +21,17 @@
                 backgroundColor: colors[msg.color][1]
             }).text('Équipe ' + colors[msg.color][0]);
         }
+    });
+
+    $('#logout').off('click').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'post',
+            url: '/logout',
+            success: function () {
+                location.reload();
+            }
+        });
     });
 
 }());

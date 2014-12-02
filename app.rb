@@ -90,6 +90,12 @@ post "/login" do
     status 200
 end
 
+post "/logout" do
+    authenticate
+    session.clear
+    status 200
+end
+
 get "/tournaments" do
     content_type :json
     Tournament.to_hash(:id).to_json
