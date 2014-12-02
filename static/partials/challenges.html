@@ -17,9 +17,18 @@
     <h1 id="challengeTitle"></h1>
     <p id="challengeDescr"></p>
 
-    <form>
+    <br>
+    <p>
+        Lorsque vous completez le challenge, signalez le à un organisateur de l'anim, il vous donnera le token de validation.
+    </p>
+    <form id="checkToken" class="form-inline">
         <input type="hidden" id="challengeId">
-        <input type="submit" id="challengeSubmit" class="btn btn-primary" value="Inscription">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" id="challengeToken" class="form-control input-block" placeholder="Token donné par l'admin">
+            </div>
+        </div>
+        <button type="submit" id="challengeSubmit" class="btn btn-primary">Valider le token</button>
     </form>
 </div>
 

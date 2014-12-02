@@ -54,21 +54,26 @@
             $allChallenges.hide();
             $oneChallenge.show();
         });
-
-        $('#challengeSubmit').click(function (e) {
-            e.preventDefault();
-            var player = localStorage.getItem('id');
-            var id = $('#challengeId').val();
-
-            $.ajax({
-                type: 'post',
-                url: '/challenges/join/' + id,
-                data: {
-                    player: player
-                }
-            });
-        });
     }
 
     render({});
+
+    $('#checkToken').off('submit').submit(function (e) {
+        e.preventDefault();
+        var id = $('#challengeId').val();
+        var token = $('#challengeToken').val();
+        $('button[type=submit]').attr('disabled', '');
+        $.ajax({
+            type: 'delete',
+            url: '/challenges/' + id + '/check/' + token,
+            success: function (msg) {
+                alert('Token validé. Points crédités : ' + msg.value);
+                $('button[type=submit]').removeAttr('disabled');
+            },
+            error: function () {
+                alert('Le token n\'est pas valide');
+                $('button[type=submit]').removeAttr('disabled');
+            }
+        });
+    });
 }());

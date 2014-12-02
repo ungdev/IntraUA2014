@@ -10,6 +10,7 @@
 
     $loginForm.off('submit').submit(function (e) {
         e.preventDefault();
+        $('button[type=submit]').attr('disabled', '');
 
         var uname = $login.val();
         var pwd = $pwd.val();
@@ -22,9 +23,11 @@
             }),
             success: function () {
                 location.href = 'index.html';
+                $('button[type=submit]').removeAttr('disabled');
             },
             error: function (msg) {
                 $err.slideDown().delay(5000).slideUp();
+                $('button[type=submit]').removeAttr('disabled');
             }
         });
     });

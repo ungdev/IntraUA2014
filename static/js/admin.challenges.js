@@ -8,15 +8,30 @@
         type: 'get',
         url: '/challenges',
         success: function (msg) {
-            render(msg);
+            var dones = 0;
+            var ids = Object.keys(msg);
+            ids.forEach(function (id) {
+                $.ajax({
+                    type: 'get',
+                    url: '/challenges/' + id + '/tokens',
+                    success: function (tokens) {
+                        dones++;
+                        msg[id].tokens = tokens;
+                        if (dones === ids.length) {
+                            console.log(msg);
+                            render(msg);
+                        }
+                    }
+                });
+            });
         }
     });
 
     function makeid () {
         var text = '';
-        var possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        var possible = 'abcdefghijklmnopqrstuvwxyz';
 
-        var i = 5;
+        var i = 7;
         while(i--) {
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
@@ -30,13 +45,36 @@
 
         Object.keys(challenges).forEach(function (challenge) {
             var $li = $('<li/>');
+            var $span = $('<span/>');
             var $a = $('<a href="#">Supprimer</a>');
 
             $a.attr('data-tournament', challenge);
-            $li.text(challenges[challenge].title + ' - ');
-            $li.append($a);
+
+            var tooltip = '';
+            var tokens = challenges[challenge].tokens;
+
+            Object.keys(tokens).forEach(function (token) {
+                tooltip += tokens[token].name + ' : ' + tokens[token].value + '<br/>';
+            });
+
+            $span.text(challenges[challenge].title + ' - ')
+                 .attr('data-toggle', 'popover')
+                 .attr('data-tigger', 'focus')
+                 .off('mouseenter').mouseenter(function () {
+                    $(this).popover('show');
+                 })
+                 .off('mouseleave').mouseleave(function () {
+                    $(this).popover('hide');
+                 });
+            $li.append($span)
+               .append($a);
 
             $list.append($li);
+            $span.popover({
+                content: tooltip,
+                html: true,
+                title: 'Tokens'
+            });
         });
 
         $('[data-tournament]').off('click').click(function (e) {
