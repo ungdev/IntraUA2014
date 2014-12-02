@@ -104,7 +104,21 @@ post "/tournaments" do
     status 201
 end
 
+get  '/user' do
+    authenticate
+    content_type :json
+    @user.to_hash.to_json
+end
+
+get  '/users' do
+    authenticate!
+    User.to_hash(:id).to_json
+end
+
 get  '/user/:id' do |id|
+    authenticate!
+    user = User.with_pk!(id)
+    content_type :json
 end
 
 put '/user/:id' do |id|
@@ -226,8 +240,8 @@ patch '/challenges/:id' do |id|
     status 200
 end
 
-delete "/challenges/:id" do |id|
-    challenge = Challenge.with_pk!(id)
+delete "/challenges/:name" do |name|
+    challenge = Challenge.where(:name=> name)
     authenticate!
     halt 403, {'Content-Type' => 'application/json'}, {:errors => "Unauthorized action"}.to_json unless @user.admin
 
@@ -239,13 +253,20 @@ delete "/challenges/:id" do |id|
 end
 
 delete '/challenges/:id/check/:token' do |id,token|
+    authenticate
     challenge = Challenge.with_pk!(id)
     halt 404, {'Content-Type' => 'application/json'}, {:errors => "Challenge not found"}.to_json if challenge.nil?
-    token = challenge.challenge_tokens[:name=>token]
+    token = ChallengeToken.where(:name=>token, :challenge=>challenge).first
     halt 404, {'Content-Type' => 'application/json'},{:errors => "Token not found"}.to_json if token.nil?
     halt 400, {'Content-Type' => 'application/json'}, {:errors => "Token not found"}.to_json unless token.deleter.nil?
+    @user.point += token.value
+    @user.save
     token.deleted_at = Time.now.getutc
     token.deleter = @user
+    token.save
+
+    content_type :json
+    token.to_hash.to_json
 end
 
 
