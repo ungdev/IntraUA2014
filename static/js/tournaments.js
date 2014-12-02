@@ -36,7 +36,7 @@
                 ],
                 [
                     "Team 15",
-                    "Team 16"
+                    "--"
                 ]
             ],
             "results": [
@@ -121,9 +121,19 @@
 
     $.ajax({
         type: 'get',
-        url: '/tournament',
+        url: '/tournaments',
         success: function (msg) {
-            render(msg);
+            console.log(msg);
+            var tournaments = {};
+            Object.keys(msg).forEach(function (tournamentId) {
+                tournaments[tournamentId] = {
+                    name: msg[tournamentId].title,
+                    teams: JSON.parse(msg[tournamentId].data_teams),
+                    results: JSON.parse(msg[tournamentId].data_results),
+                    id: msg[tournamentId].id
+                };
+            });
+            render(tournaments);
         }
     });
 
@@ -175,6 +185,15 @@
                                 .click(saveIt);
                 $target.after($button);
             }
+
+            var $join = $('<button/>')
+                            .addClass('btn btn-success joinTournament')
+                            .attr('data-currentTournament', link)
+                            .text('Rejoindre le tournoi')
+                            .click(function () {
+                                joinIt.call(this, tournaments);
+                            });
+            $target.before($join);
         });
     }
 
@@ -203,7 +222,29 @@
             url: '',
             data: tournament
         });
+    }
 
+    /**
+     * Join the tournament
+     */
+    function joinIt (tournaments) {
+        var team = window.prompt('Nom de votre team');
+        var link = $(this).attr('data-currentTournament');
+        var tournament = $.extend(true, {}, tournaments[link]);
+
+        var teams = tournament.teams;
+
+        // If the last couple of teams has one item => we push
+        // Else  the last couple of teams has 2 items => we append a new array
+        var lastOne = teams[teams.length - 1];
+        if (lastOne.length === 1 || lastOne[lastOne.length - 1] === '--') {
+            console.log('append');
+            teams[teams.length - 1][lastOne.length - 1] = team;
+        } else {
+            console.log('new');
+            teams.push([team, '--']);
+        }
+        console.log(teams);
     }
 
     // Tournament edition
