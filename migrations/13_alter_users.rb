@@ -1,0 +1,13 @@
+Sequel.migration do
+    up do
+        alter_table(:users) do
+            add_column :color, Integer, :null=> false, :default=> 0
+        end
+    end
+
+    down do
+        alter_table(:users) do
+            drop_column  :color
+        end
+    end
+end
