@@ -155,10 +155,11 @@ put "/tournaments/:id" do |id|
     status 204
 end
 
-patch '/tournaments/:tournament_id/suscribe/:new_result' do |id, new_result|
-    tournament = Tournament.with_pk!(id)
+patch '/tournaments/:tournament_id/suscribe' do |id|
     authenticate
-    tournament.data_teams = new_result
+    tournament = Tournament.with_pk!(id)
+    data = request.body.read
+    tournament.data_teams = data
     tournament.save
     status 204
 end

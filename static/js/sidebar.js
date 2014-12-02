@@ -13,6 +13,7 @@
             };
 
             window.isAdmin = msg.admin;
+            window.userId = msg.id;
 
             $('#points').text('Points : ' + msg.point).css('color', '#fff');
             $('#color').css({

@@ -123,7 +123,6 @@
         type: 'get',
         url: '/tournaments',
         success: function (msg) {
-            console.log(msg);
             var tournaments = {};
             Object.keys(msg).forEach(function (tournamentId) {
                 tournaments[tournamentId] = {
@@ -133,6 +132,7 @@
                     id: msg[tournamentId].id
                 };
             });
+            console.log(tournaments);
             render(tournaments);
         }
     });
@@ -241,10 +241,19 @@
             console.log('append');
             teams[teams.length - 1][lastOne.length - 1] = team;
         } else {
-            console.log('new');
-            teams.push([team, '--']);
+            alert('Tournoi plein');
+            return;
         }
-        console.log(teams);
+
+        var teamsStr = JSON.stringify(teams);
+        $.ajax({
+            type: 'patch',
+            url: '/tournaments/' + tournament.id + '/suscribe',
+            data: teamsStr,
+            success: function () {
+                location.reload();
+            }
+        });
     }
 
     // Tournament edition
