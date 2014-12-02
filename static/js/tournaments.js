@@ -167,12 +167,14 @@
             tournaments[link].elem = $target;
 
             $('.tournamentSaver').remove();
-            var $button = $('<button/>')
-                            .addClass('btn btn-success btn-xs tournamentSaver')
-                            .attr('data-currentTournament', link)
-                            .text('Envoyer les modifications')
-                            .click(saveIt);
-            $target.after($button);
+            if (window.isAdmin) {
+                var $button = $('<button/>')
+                                .addClass('btn btn-success btn-xs tournamentSaver')
+                                .attr('data-currentTournament', link)
+                                .text('Envoyer les modifications')
+                                .click(saveIt);
+                $target.after($button);
+            }
         });
     }
 

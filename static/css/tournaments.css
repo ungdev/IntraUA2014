@@ -36,3 +36,15 @@ div.jQBracket .bubble.fourth.fourth {
 div.jQBracket .bubble.fourth.fourth:after {
     border-right-color: #678;
 }
+
+#freeTournament {
+    line-height: 46px;
+    height: 46px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.row .col-lg-6 {
+    line-height: 196px;
+    text-align: center;
+}
