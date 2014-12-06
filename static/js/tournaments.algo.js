@@ -7,7 +7,7 @@
     function generator (baseTournament, $target) {
         $('.doubleElimination').remove();
         var tournamentElem5to8 = false;
-        var tournamentElem8to16 = false;
+        var tournamentElem9to16 = false;
         var tournamentElem13to16 = false;
 
         // Get all teams
@@ -22,6 +22,7 @@
         }
 
         var isSixteenTournament = teamList.length === 16;
+        var isHeightTournament = teamList.length === 8;
 
         // Get firsts four
         var firstsFours = [
@@ -31,53 +32,65 @@
             getFirstX(4)
         ];
 
-        // Get next fours
         var $rounds = $target.children().first().find('.round');
-        var $lastRound = $rounds.last();
-        var $eightRounds = $lastRound.prev().prev().find('.lose > .label.editable');
-        var nextEights = $eightRounds.map(function () {
-            return $(this).text();
-        });
+        if (isHeightTournament) {
+            // First round played
+            if ($rounds.eq(0).find('.win').length === 4) {
+                if ($('#Sub-' + baseTournament.id + '-5to8').length === 0) {
+                    var $loosers8_5to8 = $rounds.eq(0).find('.lose > .label.editable');
+                    var loosers8_5to8 = $loosers8_5to8.map(function () {
+                        return $(this).text();
+                    });
 
-        // If the second round has been played
-        if ($rounds.eq(1).find('.win').length === $rounds.eq(0).find('.win').length / 2) {
-            if ($('#Sub-' + baseTournament.id + '-5to8').length === 0) {
-                tournamentElem5to8 = createSub4Tournament('Sub-' + baseTournament.id + '-5to8', nextEights);
+                    tournamentElem5to8 = createSub4Tournament('Sub-' + baseTournament.id + '-5to8', loosers8_5to8, true);
+                }
             }
         }
 
-        // Get eights loosers
         if (isSixteenTournament) {
-            var $sixteenRounds = $lastRound.prev().prev().prev().find('.lose > .label.editable');
-            var nextSixteen = $sixteenRounds.map(function () {
-                return $(this).text();
-            });
+            // First round played
+            if ($rounds.eq(0).find('.win').length === 8) {
+                if ($('#Sub-' + baseTournament.id + '-9to16').length === 0) {
+                    var $loosers16_9to16 = $rounds.eq(0).find('.lose > .label.editable');
+                    var loosers16_9to16 = $loosers16_9to16.map(function () {
+                        return $(this).text();
+                    });
 
-            // If the first round has been played
-            if ($target.children().first().find('.round').eq(0).find('.win').length === 8) {
-                if ($('#Sub-' + baseTournament.id + '-8to16').length === 0) {
-                    tournamentElem8to16 = createSub8Tournament('Sub-' + baseTournament.id + '-8to16', nextSixteen);
+                    tournamentElem9to16 = createSub8Tournament('Sub-' + baseTournament.id + '-9to16', loosers16_9to16);
+                }
+            }
+
+            // Second round played
+            if ($rounds.eq(1).find('.win').length === 4) {
+                if ($('#Sub-' + baseTournament.id + '-5to8').length === 0) {
+                    var $loosers16_5to8 = $rounds.eq(1).find('.lose > .label.editable');
+                    var loosers16_5to8 = $loosers16_5to8.map(function () {
+                        return $(this).text();
+                    });
+
+                    tournamentElem5to8 = createSub4Tournament('Sub-' + baseTournament.id + '-5to8', loosers16_5to8);
                 }
 
                 if ($('#Sub-' + baseTournament.id + '-13to16').length === 0) {
-                    // If the first round of the 8-to-16 has been played
-                    var $rounds8To16 = $('#Sub-' + baseTournament.id + '-8to16').children().first().find('.round');
-                    if ($rounds8To16.eq(0).find('.win').length === 4) {
-                        var teams13To16 = $rounds8To16.eq(0).find('.lose').map(function () {
-                            return $(this).children().first().text();
-                        });
-                        tournamentElem13to16 = createSub4Tournament('Sub-' + baseTournament.id + '-13to16', teams13To16, 8);
+                    var $rounds9to16 = $('#Sub-' + baseTournament.id + '-9to16').children().first().find('.round');
+                    var $loosers16_13to16 = $rounds9to16.eq(0).find('.lose > .label.editable');
+                    var loosers16_13to16 = $loosers16_13to16.map(function () {
+                        return $(this).text();
+                    });
+
+                    if (loosers16_13to16.length !== 0) {
+                        tournamentElem13to16 = createSub4Tournament('Sub-' + baseTournament.id + '-13to16', loosers16_13to16, 8);
                     }
                 }
             }
         }
 
         tournamentElem5to8   = tournamentElem5to8   || $('#Sub-' + baseTournament.id + '-5to8');
-        tournamentElem8to16  = tournamentElem8to16  || $('#Sub-' + baseTournament.id + '-8to16');
+        tournamentElem9to16  = tournamentElem9to16  || $('#Sub-' + baseTournament.id + '-9to16');
         tournamentElem13to16 = tournamentElem13to16 || $('#Sub-' + baseTournament.id + '-13to16');
 
         tournamentElem5to8.insertAfter($target.children().last());
-        tournamentElem8to16.insertAfter($target.children().last());
+        tournamentElem9to16.insertAfter($target.children().last());
         tournamentElem13to16.insertAfter($target.children().last());
     }
 
@@ -112,9 +125,11 @@
      * @param {Array}   list          The team list
      * @param {Number}  startRank     Starting rank (used for 13th to 16th)
      */
-    function createSub4Tournament (name, list, startRank) {
+    function createSub4Tournament (name, list, startRank, fromEight) {
         var tournament = genBracketObjFromList(name, list);
-        var $div = $('<div/>').addClass('shiftTournament-2').attr('id', name);
+        var shift = (fromEight) ? 'shiftTournament-1' : 'shiftTournament-2';
+        var $div = $('<div/>').addClass(shift).attr('id', name);
+        console.log(tournament);
         $div.bracket({
             init: tournament,
             save: $.noop,
@@ -235,7 +250,77 @@
             tournament.teams.push([list[i - 1], list[i]]);
         }
 
-        tournament.results = [];
+        if (list.length === 2) {
+            tournament.results = [
+                [
+                    [
+                        [null, null]
+                    ]
+                ]
+            ];
+        } else if (list.length === 4) {
+            tournament.results = [
+                [
+                    [
+                        [null, null],
+                        [null, null]
+                    ],
+                    [
+                        [null, null],
+                        [null, null]
+                    ]
+                ]
+            ];
+        } else if (list.length === 8) {
+            tournament.results  = [
+                [
+                    [
+                        [null, null],
+                        [null, null],
+                        [null, null],
+                        [null, null]
+                    ],
+                    [
+                        [null, null],
+                        [null, null]
+                    ],
+                    [
+                        [null, null],
+                        [null, null]
+                    ]
+                ]
+            ];
+        } else if (list.length === 16) {
+            tournament.results = [
+                [
+                    [
+                        [null, null],
+                        [null, null],
+                        [null, null],
+                        [null, null],
+                        [null, null],
+                        [null, null],
+                        [null, null],
+                        [null, null]
+                    ],
+                    [
+                        [null, null],
+                        [null, null],
+                        [null, null],
+                        [null, null]
+                    ],
+                    [
+                        [null, null],
+                        [null, null]
+                    ],
+                    [
+                        [null, null],
+                        [null, null]
+                    ]
+                ]
+            ];
+        }
+
         return tournament;
     }
 

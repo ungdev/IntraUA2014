@@ -29,22 +29,25 @@
         }
 
         var list = [];
-        while(nbTeams--) {
-            list.push('Equipe ' + (nbTeams + 1).toString());
+        for (var i = 1; i <= nbTeams; ++i) {
+            list.push('Equipe ' + i.toString());
         }
 
         var tournament = genBracketObjFromList(name, list);
 
         $.ajax({
             type: 'post',
-            url: /tournament/,
-            data: {
+            url: '/tournaments',
+            data: JSON.stringify({
                 title: name,
-                owner: localStorage.getItem('id'),
                 description: desc,
                 capacity: maxp,
-                teamsize: inTeam,
-                data: tournament
+                teamSize: inTeam,
+                data_teams: JSON.stringify(tournament.teams),
+                data_results: JSON.stringify(tournament.results)
+            }),
+            success: function () {
+                location.hash = '!/tournaments.html';
             }
         });
     });
@@ -63,7 +66,15 @@
                     $submit
                         .removeAttr('disabled')
                         .removeClass('btn-disabled');
-                    $span.text(maxplayers / inTeam);
+                    var ratio = maxplayers / inTeam;
+                    if (ratio === 2 || ratio === 4 || ratio === 8 || ratio === 16) {
+                        $span.text(maxplayers / inTeam);
+                    } else {
+                        $submit
+                            .attr('disabled', '')
+                            .removeClass('btn-disabled');
+                        $span.text('Le nombre d\'équipes doit être une puissance de 2 (max: 16)');
+                    }
                 } else {
                     $submit
                         .attr('disabled', '')
