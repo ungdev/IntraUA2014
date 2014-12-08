@@ -26,7 +26,7 @@
                         teams: JSON.parse(msg[tournamentId].data_teamsSub5to8),
                         results: JSON.parse(msg[tournamentId].data_resultsSub5to8),
                         id: 'Sub-' + msg[tournamentId].id + '-5to8'
-                    }
+                    };
                 }
 
                 if (msg[tournamentId].data_resultsSub9to16) {
@@ -35,19 +35,18 @@
                         teams: JSON.parse(msg[tournamentId].data_teamsSub9to16),
                         results: JSON.parse(msg[tournamentId].data_resultsSub9to16),
                         id: 'Sub-' + msg[tournamentId].id + '-9to16'
-                    }
+                    };
                 }
 
                 if (msg[tournamentId].data_resultsSub13to16) {
-                    tournaments['Sub-' + msg[tournamentId].id + '-5to8'] = {
+                    tournaments['Sub-' + msg[tournamentId].id + '-13to16'] = {
                         name: 'Sub-' + msg[tournamentId].id + '-13to16',
                         teams: JSON.parse(msg[tournamentId].data_teamsSub13to16),
                         results: JSON.parse(msg[tournamentId].data_resultsSub13to16),
                         id: 'Sub-' + msg[tournamentId].id + '-13to16'
-                    }
+                    };
                 }
             });
-            console.log(tournaments);
             render(tournaments);
         }
     });
@@ -103,37 +102,88 @@
             if (has5to8) {
                 var sub5to8 = tournaments['Sub-' + link + '-5to8'];
                 $target.append('<div/>');
-                var $div = $target.children().last();
-                $div.addClass('shiftTournament-1').attr('id', 'Sub-' + link + '-5to8');
-                $div.bracket({
+                var $div5to8 = $target.children().last();
+                var shifter = (tournaments[link].teams.length === 4) ? 'shiftTournament-1' : 'shiftTournament-2';
+                $div5to8.addClass(shifter).attr('id', 'Sub-' + link + '-5to8');
+                $div5to8.bracket({
                     init: sub5to8,
-                    save: function () {}
+                    save: function () {},
+                    decorator: {
+                        edit: window.bracketOnEdit,
+                        render: function () {
+                            window.bracketOnRender.apply(this, arguments);
+                            setTimeout(function () {
+                                $div5to8.find('.bubble').each(function () {
+                                    var current = parseInt($(this).text(), 10);
+                                    if (current <= 4) {
+                                        $(this).text((current + 4) + 'st');
+                                    }
+                                });
+                            }, 400);
+                        }
+                    }
                 });
-                $div.find('.jQBracket').css('width', '320px');
-                $div.find('.label, .score').addClass('editable');
+                $div5to8.find('.jQBracket').css('width', '320px');
+                $div5to8.find('.label, .score').addClass('editable');
             }
 
             if (has9to16) {
                 var sub9to16 = tournaments['Sub-' + link + '-9to16'];
-                console.log(sub9to16);
                 $target.append('<div/>');
-                var $div = $target.children().last();
-                $div.addClass('shiftTournament-1').attr('id', 'Sub-' + link + '-9to16');
-                $div.bracket({
+                var $div9to16 = $target.children().last();
+                $div9to16.addClass('shiftTournament-1').attr('id', 'Sub-' + link + '-9to16');
+                $div9to16.bracket({
                     init: sub9to16,
-                    save: function () {}
+                    save: function () {},
+                    decorator: {
+                        edit: window.bracketOnEdit,
+                        render: function () {
+                            window.bracketOnRender.apply(this, arguments);
+                            setTimeout(function () {
+                                $div9to16.find('.bubble').each(function () {
+                                    var current = parseInt($(this).text(), 10);
+                                    if (current <= 4) {
+                                        $(this).text((current + 8) + 'st');
+                                    }
+                                });
+                            }, 400);
+                        }
+                    }
                 });
-                $div.find('.jQBracket').css('width', '460px');
+                $div9to16.find('.jQBracket').css('width', '460px');
             }
 
             if (has13to16) {
-
+                var sub13to16 = tournaments['Sub-' + link + '-13to16'];
+                $target.append('<div/>');
+                var $div13to16 = $target.children().last();
+                $div13to16.addClass('shiftTournament-2').attr('id', 'Sub-' + link + '-13to16');
+                $div13to16.bracket({
+                    init: sub13to16,
+                    save: function () {},
+                    decorator: {
+                        edit: window.bracketOnEdit,
+                        render: function () {
+                            window.bracketOnRender.apply(this, arguments);
+                            setTimeout(function () {
+                                $div13to16.find('.bubble').each(function () {
+                                    var current = parseInt($(this).text(), 10);
+                                    if (current <= 4) {
+                                        $(this).text((current + 4) + 'st');
+                                    }
+                                });
+                            }, 400);
+                        }
+                    }
+                });
+                $div13to16.find('.jQBracket').css('width', '320px');
+                $div13to16.find('.label, .score').addClass('editable');
             }
 
             $('.tools').remove();
 
             $('.tournamentSaver').remove();
-            if (window.isAdmin) {
+            if (window.isAdmin || allTournaments[link].owner_id === window.userId) {
                 var $button = $('<button/>')
                                 .addClass('btn btn-success tournamentSaver')
                                 .attr('data-currentTournament', link)
@@ -186,7 +236,6 @@
         // Save the sub5to8
         var $sub5to8 = $('#Sub-' + tournament.id + '-5to8');
         if ($sub5to8.length !== 0) {
-            console.log('save 5 to 8');
             var sub5to8tournament = $sub5to8.data().bracket.obj.data();
             mainTournament.data_teamsSub5to8 = JSON.stringify(sub5to8tournament.teams);
             mainTournament.data_resultsSub5to8 = JSON.stringify(sub5to8tournament.results);
@@ -194,7 +243,6 @@
         // Save the sub9to16
         var $sub9to16 = $('#Sub-' + tournament.id + '-9to16');
         if ($sub9to16.length !== 0) {
-            console.log('save 9 to 16');
             var sub9to16tournament = $sub9to16.data().bracket.obj.data();
             mainTournament.data_teamsSub9to16 = JSON.stringify(sub9to16tournament.teams);
             mainTournament.data_resultsSub9to16 = JSON.stringify(sub9to16tournament.results);
@@ -202,7 +250,6 @@
         // Save the sub 13to16
         var $sub13to16 = $('#Sub-' + tournament.id + '-13to16');
         if ($sub13to16.length !== 0) {
-            console.log('save 13 to 16');
             var sub13to16tournament = $sub13to16.data().bracket.obj.data();
             mainTournament.data_teamsSub13to16 = JSON.stringify(sub13to16tournament.teams);
             mainTournament.data_resultsSub13to16 = JSON.stringify(sub13to16tournament.results);
@@ -213,7 +260,10 @@
             url: '/tournaments/' + tournament.id,
             data: JSON.stringify(mainTournament),
             success: function () {
-                //location.reload();
+                location.reload();
+            },
+            error: function () {
+                alert('Vous n\'avez pas les droits de modification');
             }
         });
     }
@@ -232,7 +282,6 @@
         // Else  the last couple of teams has 2 items => we append a new array
         var lastOne = teams[teams.length - 1];
         if (lastOne.length === 1 || lastOne[lastOne.length - 1] === '--') {
-            console.log('append');
             teams[teams.length - 1][lastOne.length - 1] = team;
         } else {
             alert('Tournoi plein');
