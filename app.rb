@@ -121,6 +121,19 @@ get  '/users' do
     User.to_hash(:id).to_json
 end
 
+get  '/usersScores' do
+    authenticate!
+    score = {}
+    User.select(:point, :color).group(:color).each do |user|
+        if score[user.color].nil?
+            score[user.color] = 0
+        end
+        score[user.color] += user.point
+    end
+    content_type :json
+    score.to_json
+end
+
 get  '/user/:id' do |id|
     authenticate!
     user = User.with_pk!(id)

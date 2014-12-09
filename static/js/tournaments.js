@@ -169,7 +169,7 @@
                                 $div13to16.find('.bubble').each(function () {
                                     var current = parseInt($(this).text(), 10);
                                     if (current <= 4) {
-                                        $(this).text((current + 4) + 'st');
+                                        $(this).text((current + 12) + 'st');
                                     }
                                 });
                             }, 400);
@@ -203,6 +203,12 @@
                                 joinIt.call(this, tournaments);
                             });
             $target.before($join);
+
+            $('.pool').remove();
+            if (allTournaments[link].data_pool) {
+                var pools = window.poolify(allTournaments[link].data_pool);
+                $target.before(pools);
+            }
         });
     }
     render({});
@@ -253,6 +259,11 @@
             var sub13to16tournament = $sub13to16.data().bracket.obj.data();
             mainTournament.data_teamsSub13to16 = JSON.stringify(sub13to16tournament.teams);
             mainTournament.data_resultsSub13to16 = JSON.stringify(sub13to16tournament.results);
+        }
+
+        // Save the pool
+        if (allTournaments[link].data_pool) {
+            mainTournament.data_pool = window.unpoolify($('.pool').first().parent().parent());
         }
 
         $.ajax({

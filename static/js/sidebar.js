@@ -7,7 +7,7 @@
         type: 'get',
         url: '/user',
         success: function (msg) {
-            var colors = {
+            window.colors = {
                 0: ['Rouge', 'rgba(255, 0, 0, 0.6)', '#fff'],
                 1: ['Bleue', 'rgba(0, 0, 255, 0.6)', '#fff']
             };

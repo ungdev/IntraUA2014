@@ -48,3 +48,7 @@ div.jQBracket .bubble.fourth.fourth:after {
     line-height: 196px;
     text-align: center;
 }
+
+.pool tbody td {
+    cursor: pointer;
+}
