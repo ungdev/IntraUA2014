@@ -69,15 +69,7 @@ post "/login" do
 
     halt 401, {'Content-Type' => 'application/json'}, {:errors => "User not found"}.to_json  if user.nil?
 
-    salt = user.salt
-    salted = password + '{' + salt + '}'
-    digest = Digest::SHA512.digest(salted)
-    for i in (1...5000) do
-        digest = Digest::SHA512.digest(digest + salted)
-    end
-    encodedPassword = Base64.strict_encode64(digest)
-
-    halt 401,  {'Content-Type' => 'application/json'}, {:errors => "Wrong password"}.to_json  unless user.password == encodedPassword
+    halt 401,  {'Content-Type' => 'application/json'}, {:errors => "Wrong password"}.to_json  unless user.password == user.encode (user.salt, password)
 
     token = SecureRandom.hex
     user.token = token
@@ -129,6 +121,17 @@ end
 get  '/users' do
     authenticate!
     User.to_hash(:id).to_json
+end
+
+post '/users' do
+    authenticate!
+    userData = JSON.parse request.body.read
+    password = userData.delete 'plainPassword'
+    userData['salt'] = SecureRandom.hex
+    userData['password'] = User.encode (userData['salt'], userData.delete('plainPassword')) 
+    user = User.new userData
+    halt 400, {'Content-Type' => 'application/json'},{:errors => user.errors}.to_json unless user.valid?
+    user.save
 end
 
 get  '/usersScores' do
