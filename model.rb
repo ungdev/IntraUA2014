@@ -17,7 +17,7 @@ class User < Sequel::Model
    one_to_many :owned_tournaments, :class=>:Tournament, :key=>:owner_id
   many_to_many :tournaments
     
-    def encode (salt, password)
+    def self.encode (salt, password)
         salted = password + '{' + salt + '}'
         digest = Digest::SHA512.digest(salted)
         for i in (1...5000) do
