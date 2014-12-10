@@ -120,6 +120,7 @@ post '/user' do
     user = User.new params
     halt 400, {'Content-Type' => 'application/json'},{:errors => user.errors}.to_json unless user.valid?
     user.save
+    status 201
 end
 
 get  '/usersScores' do
