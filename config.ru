@@ -1,5 +1,5 @@
 require 'rubygems'
-require_relative 'app'
+require './app'
 
 #map a directory including a directory listing
 map "/js" do
