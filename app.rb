@@ -69,7 +69,7 @@ post "/login" do
 
     halt 401, {'Content-Type' => 'application/json'}, {:errors => "User not found"}.to_json  if user.nil?
 
-    halt 401,  {'Content-Type' => 'application/json'}, {:errors => "Wrong password"}.to_json  unless user.password == user.encode (user.salt, password)
+    halt 401, {'Content-Type' => 'application/json'}, {:errors => "Wrong password"}.to_json  unless user.password == user.encode(user.salt, password)
 
     token = SecureRandom.hex
     user.token = token
@@ -118,7 +118,7 @@ post '/user' do
     userData = JSON.parse request.body.read
     password = userData.delete 'plainPassword'
     userData['salt'] = SecureRandom.hex
-    userData['password'] = User.encode (userData['salt'], userData.delete('plainPassword'))
+    userData['password'] = User.encode(userData['salt'], userData.delete('plainPassword'))
     user = User.new userData
     halt 400, {'Content-Type' => 'application/json'},{:errors => user.errors}.to_json unless user.valid?
     user.save
