@@ -113,7 +113,7 @@ get  '/users' do
     User.to_hash(:id).to_json
 end
 
-post '/users' do
+post '/user' do
     authenticate!
     userData = JSON.parse request.body.read
     password = userData.delete 'plainPassword'
