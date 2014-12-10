@@ -283,18 +283,25 @@
      * Join the tournament
      */
     function joinIt (tournaments) {
-        var team = window.prompt('Nom de votre team');
+        var newTeam = window.prompt('Nom de votre team');
         var link = $(this).attr('data-currentTournament');
         var tournament = $.extend(true, {}, tournaments[link]);
-
         var teams = tournament.teams;
 
-        // If the last couple of teams has one item => we push
-        // Else  the last couple of teams has 2 items => we append a new array
-        var lastOne = teams[teams.length - 1];
-        if (lastOne.length === 1 || lastOne[lastOne.length - 1] === '--') {
-            teams[teams.length - 1][lastOne.length - 1] = team;
-        } else {
+        var canJoin = false;
+        var joined = false;
+        teams.forEach(function (subTeams, i) {
+            subTeams.forEach(function (team, j) {
+                if (team === '--' && !joined) {
+                    canJoin = true;
+                    joined = true;
+                    console.log(teams[i][j]);
+                    teams[i][j] = newTeam;
+                }
+            });
+        });
+
+        if (!canJoin) {
             alert('Tournoi plein');
             return;
         }
