@@ -295,7 +295,6 @@
                 if (team === '--' && !joined) {
                     canJoin = true;
                     joined = true;
-                    console.log(teams[i][j]);
                     teams[i][j] = newTeam;
                 }
             });
