@@ -116,6 +116,16 @@ get  '/user' do
     @user.to_hash.to_json
 end
 
+post '/user' do
+    authenticate!
+    user = User.new JSON.parse request.body.read
+    content_type :json
+    halt 400, {:errors => user.errors}.to_json unless user.valid?
+    user.save
+    status 201
+    user.to_hash.to_json
+end
+
 get  '/users' do
     authenticate!
     User.to_hash(:id).to_json
