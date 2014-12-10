@@ -108,16 +108,6 @@ get  '/user' do
     @user.to_hash.to_json
 end
 
-post '/user' do
-    authenticate!
-    user = User.new JSON.parse request.body.read
-    content_type :json
-    halt 400, {:errors => user.errors}.to_json unless user.valid?
-    user.save
-    status 201
-    user.to_hash.to_json
-end
-
 get  '/users' do
     authenticate!
     User.to_hash(:id).to_json
@@ -128,7 +118,7 @@ post '/users' do
     userData = JSON.parse request.body.read
     password = userData.delete 'plainPassword'
     userData['salt'] = SecureRandom.hex
-    userData['password'] = User.encode (userData['salt'], userData.delete('plainPassword')) 
+    userData['password'] = User.encode (userData['salt'], userData.delete('plainPassword'))
     user = User.new userData
     halt 400, {'Content-Type' => 'application/json'},{:errors => user.errors}.to_json unless user.valid?
     user.save
