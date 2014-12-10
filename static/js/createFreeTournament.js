@@ -30,7 +30,7 @@
 
         var list = [];
         for (var i = 1; i <= nbTeams; ++i) {
-            list.push('Equipe ' + i.toString());
+            list.push('--');
         }
 
         var tournament = genBracketObjFromList(name, list);
