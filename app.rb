@@ -115,9 +115,12 @@ end
 
 post '/user' do
     authenticate!
-    params['salt'] = SecureRandom.hex
-    params['password'] = User.encode(params['salt'], params.delete('plainPassword'))
-    user = User.new params
+    puts request.body.read
+    request.body.rewind
+    userData = JSON.parse request.body.read
+    userData['salt'] = SecureRandom.hex
+    userData['password'] = User.encode(userData['salt'], userData.delete('plainPassword'))
+    user = User.new userData
     halt 400, {'Content-Type' => 'application/json'},{:errors => user.errors}.to_json unless user.valid?
     user.save
     status 201
