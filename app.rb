@@ -302,6 +302,11 @@ delete '/challenges/:id/check/:token' do |id,token|
     token.to_hash.to_json
 end
 
+get '/best/:limit?' do |limit|
+     content_type :json
+    User.select(:username, :point, :color).order(:point).limit(limit.nil? ? 3 : limit).all.to_json
+end
+
 post '/checkHidden' do
     data = JSON.parse request.body.read
     if data['try'] == 'luacestgenial'
@@ -312,7 +317,6 @@ post '/checkHidden' do
         status 400
     end
 end
-
 
 
 get '/login.html' do
