@@ -22,10 +22,10 @@
 
                 if (!hasSidebar) {
                     ctx.canvas.width  = window.innerWidth - 50;
-                    ctx.canvas.height = window.innerHeight - 100;
+                    ctx.canvas.height = window.innerHeight - 300;
                 } else {
                     ctx.canvas.width  = window.innerWidth - sidebarWrapperWidth - 50;
-                    ctx.canvas.height = window.innerHeight - 100;
+                    ctx.canvas.height = window.innerHeight - 300;
                 }
 
                 var teams = [];
