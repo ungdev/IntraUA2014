@@ -74,6 +74,7 @@
             success: function (msg) {
                 alert('Token validé. Points crédités : ' + msg.value);
                 $('button[type=submit]').removeAttr('disabled');
+                location.reload();
             },
             error: function () {
                 alert('Le token n\'est pas valide');
