@@ -1,3 +1,12 @@
 #oneChallenge {
     display: none;
 }
+
+#challengeDescr a {
+    color: #333;
+}
+
+#challengeDescr a:hover {
+    cursor: pointer;
+    text-decoration: none;
+}

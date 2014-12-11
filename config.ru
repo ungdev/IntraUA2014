@@ -18,4 +18,10 @@ map "/img" do
     run Rack::Directory.new("./static/img")
 end
 
+map "/swf" do
+    run Rack::Directory.new("./static/swf")
+end
+
+use Rack::Static, :urls => ["/crossdomain.xml"]
+
 run Sinatra::Application

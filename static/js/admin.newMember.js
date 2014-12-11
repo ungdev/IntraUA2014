@@ -14,7 +14,8 @@
                 username: $("#username").val(),
                 plainPassword: $("#plainPassword").val(),
                 color: $("input:radio[name=color]:checked").val(),
-                admin: $("#admin").val()
+                admin: $("#admin").is(':checked'),
+                point: 0
             }),
             success: function () {
 		paragraph.text('Cet utilisateur a été crée');

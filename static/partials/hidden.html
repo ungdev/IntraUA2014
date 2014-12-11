@@ -1,0 +1,41 @@
+<h1>Énigme</h1>
+<p>Personnel perdu en Math.PI ayant hérité a Paris fit poser apollo en solo. Film fini, “cinq fléau de personnic” honora Mordor et Naruto. Etang, mer, grandira trop. Zenith enseveli, atrophié, étoile en tort, air rare. Alors YOLO. Bel homme, rajeuni, solennel et riche. Fumer l’ether aide, sang vivifié, an purifié, par Narnia. Quel Nazi sous methamphetamine, purifiée, rang alpha, idéal, de Polonium. Même un elephant en bleu abyssal immortel, explicite extremum, marche ,en etant ramoli.Nation embellit entre lifting, fruitier, vodka, ball suave, tothem, bijoutrie, gentleman et viagra. Allemand cascadeur mécano, travesti riant, jette golum blème en buvant. Emanuel voulu avec Roger Travolta,  amoureusement,  travesti leitmotiv falucharde.</p>
+
+<label for="solution">Solution :</label>
+<div class="form-group">
+    <input type="text" id="solution" class="form-control input-block">
+</div>
+<button class="btn btn-primary" id="validate">Envoyer</button>
+
+<style>
+    p {
+        font-size: 18px;
+        margin: 40px 0;
+        text-align: justify;
+    }
+</style>
+
+
+<script>
+    $('#validate').click(function (e) {
+        e.preventDefault();
+        var sol = $('#solution').val();
+        sol = sol.toLowerCase();
+        sol = sol.replace(/é/g, 'e');
+        sol = sol.replace(/[\W]/gi, '');
+
+        $.ajax({
+            type: 'post',
+            url: '/checkHidden',
+            data: JSON.stringify({
+                try: sol
+            }),
+            success: function (msg) {
+                location.href = msg;
+            },
+            error: function () {
+                alert('Mauvaise solution !');
+            }
+        });
+    });
+</script>

@@ -307,6 +307,18 @@ get '/best/:limit?' do |limit|
     User.select(:username, :point, :color).order(:point).limit(limit.nil? ? 3 : limit).all.to_json
 end
 
+post '/checkHidden' do
+    data = JSON.parse request.body.read
+    if data['try'] == 'luacestgenial'
+        status 200
+        content_type :text
+        '/index.html#!/hidd3n.html'
+    else
+        status 400
+    end
+end
+
+
 get '/login.html' do
     content_type :html
     send_file File.expand_path('../static/login.html',  __FILE__)

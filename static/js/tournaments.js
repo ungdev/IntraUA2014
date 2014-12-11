@@ -55,6 +55,12 @@
     function render (tournaments) {
         var $list = $('#list').empty();
         Object.keys(tournaments).forEach(function (tournament) {
+            // Spotlights disabled
+            if (tournament <= 4) {
+                return;
+            }
+
+            // Sub tournaments disabled
             if (tournament.indexOf('Sub-') === 0) {
                 return;
             }
@@ -182,6 +188,7 @@
 
             $('.tools').remove();
 
+            var showButtons = location.hash !== '#!/spotlights.html';
             $('.tournamentSaver').remove();
             if (window.isAdmin || allTournaments[link].owner_id === window.userId) {
                 var $button = $('<button/>')
@@ -202,7 +209,9 @@
                             .click(function () {
                                 joinIt.call(this, tournaments);
                             });
-            $target.before($join);
+            if (showButtons) {
+                $target.before($join);
+            }
 
             $('.pool').remove();
             if (allTournaments[link].data_pool) {
