@@ -8,9 +8,9 @@
     var ctx = canvas.getContext('2d');
     var teamsChart = null;
 
-    function makeArray (size, where, value) {
-
-    }
+    var $firstOne  = $('#firstOne');
+    var $secondOne = $('#secondOne');
+    var $thirdOne  = $('#thirdOne');
 
     function refresh () {
         $.ajax({
@@ -48,8 +48,6 @@
                     dataset[0].data.push(teamPoint);
                 });
 
-                console.log(dataset);
-
                 if (teamsChart) {
                     dataset[0].data.forEach(function (v, i) {
                         teamsChart.datasets[0].bars[i].value = v;
@@ -78,6 +76,37 @@
                     teamsChart.datasets[0].bars
                 }
                 setTimeout(refresh, 4000);
+            }
+        });
+        $.ajax({
+            type: 'get',
+            url: '/best/',
+            success: function (msg) {
+                msg.forEach(function (bestOne, i) {
+                    if (i === 0) {
+                        $firstOne.text(bestOne.username + ' : ' + bestOne.point + ' points');
+                        console.log(colors[bestOne.color][1]);
+                        $firstOne.css({
+                            color: colors[bestOne.color][1],
+                            fontWeight: 'bold',
+                            padding: '4px'
+                        });
+                    } else if (i === 1) {
+                        $secondOne.text(bestOne.username + ' : ' + bestOne.point + ' points');
+                        $secondOne.css({
+                            color: colors[bestOne.color][1],
+                            fontWeight: 'bold',
+                            padding: '4px'
+                        });
+                    } else if (i === 2) {
+                        $thirdOne.text(bestOne.username + ' : ' + bestOne.point + ' points');
+                        $thirdOne.css({
+                            color: colors[bestOne.color][1],
+                            fontWeight: 'bold',
+                            padding: '4px'
+                        });
+                    }
+                });
             }
         });
     }
