@@ -14,7 +14,6 @@
 
     // Rendering
     function render (events) {
-        console.log('render', events);
         var $list = $('#list').empty();
         Object.keys(events).forEach(function (name) {
             var $h3 = $('<h3/>')
