@@ -38,6 +38,8 @@
 
     bindLinks();
 
+    window.bindLinks = bindLinks;
+
     // Bind hashtag change in url
     window.onhashchange = function (e) {
         // Clear bootsrap-datetimepicker

@@ -51,6 +51,11 @@
             $challengeTitle.text(challenge.title);
             $challengeDescr.text(challenge.description);
 
+            if (challenge.id === 1) {
+                $challengeDescr.html('Une page cac<a data-load-partial="hidden.html">h</a>ée ? Où ça ?');
+                bindLinks();
+            }
+
             $allChallenges.hide();
             $oneChallenge.show();
         });

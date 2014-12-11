@@ -10,23 +10,24 @@
 <div id="player"></div>
 
 <script>
-flowplayer("player" ,"http://releases.flowplayer.org/swf/flowplayer-3.2.18.swf", {
-     clip: {
-        url: 'ua_test',
-        scaling: 'fit',
-        provider: 'ua'
-    },
-    plugins: {
-        ua: {
-            url: "swf/flowplayer.rtmp-3.2.13.swf",
-            netConnectionUrl: 'rtmp://caterino.ua/live/'
+    flowplayer("player", "http://releases.flowplayer.org/swf/flowplayer-3.2.18.swf", {
+         clip: {
+            url: 'ua_test',
+            scaling: 'fit',
+            provider: 'ua'
+        },
+        plugins: {
+            ua: {
+                url: "swf/flowplayer.rtmp-3.2.13.swf",
+                netConnectionUrl: 'rtmp://caterino.ua/live/'
+            }
+        },
+        canvas: {
+            backgroundGradient: 'none'
         }
-    },
-    canvas: {
-        backgroundGradient: 'none'
-    }
-});
-setTimeout(function () {
-    $('#player_api').attr('height', '400');
-}, 500);
+    });
+
+    setTimeout(function () {
+        $('#player_api').attr('height', '400');
+    }, 500);
 </script>

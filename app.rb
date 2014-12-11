@@ -302,6 +302,17 @@ delete '/challenges/:id/check/:token' do |id,token|
     token.to_hash.to_json
 end
 
+post '/checkHidden' do
+    data = JSON.parse request.body.read
+    if data['try'] == 'luacestgenial'
+        status 200
+        content_type :text
+        '/index.html#!/hidd3n.html'
+    else
+        status 400
+    end
+end
+
 
 
 get '/login.html' do
