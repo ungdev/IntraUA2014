@@ -53,8 +53,8 @@
             var tooltip = '';
             var tokens = challenges[challenge].tokens;
 
-            Object.keys(tokens).forEach(function (token) {
-                tooltip += tokens[token].name + ' : ' + tokens[token].value + '<br/>';
+            tokens.forEach(function (token) {
+                tooltip += token.name + ' : ' + token.value + '<br/>';
             });
 
             $span.text(challenges[challenge].title + ' - ')

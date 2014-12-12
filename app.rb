@@ -261,7 +261,7 @@ end
 
 get "/challenges/:id/tokens" do |id|
     content_type :json
-    Challenge.with_pk!(id).challenge_tokens_dataset.select(:name, :value).to_hash(:value).to_json
+    Challenge.with_pk!(id).challenge_tokens_dataset.select(:name, :value).all.to_json
 end
 
 put "/challenges/:id" do |id|
