@@ -46,8 +46,12 @@
         $('script').last().nextUntil().remove();
 
         var linkArr = location.hash.split('#!/');
+        if (linkArr.length === 1 && linkArr[0] === '') {
+            linkArr = ['', ''];
+        }
+
         if (linkArr.length === 2) {
-            var link = linkArr[1].trim();
+            var link = (linkArr[1] === '') ? 'index.html' : linkArr[1].trim();
             var $target = $('#page-content-wrapper');
             var $link = $('[data-load-partial="' + link + '"]');
             $link.addClass('active');
