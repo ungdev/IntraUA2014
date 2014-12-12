@@ -128,10 +128,11 @@ end
 get  '/usersScores' do
     authenticate!
     score = {}
-    User.select(:point, :color).group(:color).each do |user|
+    User.select(:point, :color).each do |user|
         if score[user.color].nil?
             score[user.color] = 0
         end
+        puts user
         score[user.color] += user.point
     end
     content_type :json
@@ -311,7 +312,7 @@ end
 
 get '/best/:limit?' do |limit|
      content_type :json
-    User.select(:username, :point, :color).order(:point).limit(limit.nil? ? 3 : limit).all.to_json
+    User.select(:username, :point, :color).order(Sequel.desc(:point)).limit(limit.nil? ? 3 : limit).all.to_json
 end
 
 post '/checkHidden' do
