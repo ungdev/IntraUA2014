@@ -18,7 +18,6 @@ require_relative 'model'
 disable :raise_errors
 disable :show_exceptions
 
-
 set :public_folder, Proc.new { File.join(root, "static") }
 disable :static
 set :static_cache_control, [:public_folder, :max_age => 0]
@@ -137,6 +136,14 @@ get  '/usersScores' do
     end
     content_type :json
     score.to_json
+end
+
+get  '/usersScores/:username' do |username|
+    authenticate!
+    user = User.first(:username=>username)
+    halt 400, {'Content-Type' => 'application/json'}, {:errors => 'User not found'}.to_json if user.nil?
+    content_type :json
+    user.to_hash.to_json
 end
 
 get  '/user/:id' do |id|

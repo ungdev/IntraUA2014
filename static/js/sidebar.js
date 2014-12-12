@@ -35,4 +35,22 @@
         });
     });
 
+    $('#checkUser').off('click').click(function (e) {
+        e.preventDefault();
+        var username = window.prompt('Nom de l\'utilisateur ?');
+        if (username) {
+            alert('Demandez le prénom et le nom de famillle de la personne, et vérifiez sur arena.utt.fr, avant de lui donner l\'indice !');
+            $.ajax({
+                type: 'get',
+                url: '/usersScores/' + username,
+                success: function (msg) {
+                    alert('Nombre de points : ' + msg.point);
+                },
+                error: function () {
+                    alert('Utilisateur non trouvé');
+                }
+            });
+        }
+    });
+
 }());
