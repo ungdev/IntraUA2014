@@ -8,7 +8,7 @@ class Sequel::Model
     def to_json (arg)
         @values.to_json
     end
-    
+
     def to_s
         @values.to_json
     end
@@ -16,7 +16,7 @@ end
 class User < Sequel::Model
    one_to_many :owned_tournaments, :class=>:Tournament, :key=>:owner_id
   many_to_many :tournaments
-    
+
     def self.encode (salt, password)
         salted = password + '{' + salt + '}'
         digest = Digest::SHA512.digest(salted)
